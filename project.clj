@@ -17,7 +17,7 @@
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
 
   :cljsbuild {:builds [{:id "dev"
-                        :source-paths ["src"]
+                        :source-paths ["src" "test"]
 
                         :figwheel { :on-jsload "solitaire.core/on-js-reload" }
 

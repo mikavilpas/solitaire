@@ -1,6 +1,7 @@
 (ns ^:figwheel-always solitaire.core
     (:require [reagent.core :as reagent :refer [atom]]
-              [figwheel.client :as fw]))
+              [figwheel.client :as fw]
+              [solitaire.logic :as l]))
 
 (enable-console-print!)
 
