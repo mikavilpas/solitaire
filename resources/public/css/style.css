@@ -1,2 +1,14 @@
-/* some style */
+div.board {
+    background-image: url("../img/table.jpg");
+    max-width: 800px;
+}
 
+.card-place {
+    background-color: rgba(0,0,0,0.3);
+    border-radius: 5px;
+}
+
+.card {
+    height: 7em;
+    min-height: 10%;
+}
