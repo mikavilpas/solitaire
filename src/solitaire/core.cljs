@@ -32,13 +32,9 @@
      [:div.col-xs-2.col-xs-offset-2 (card-place)]
      [:div.col-xs-2 (card-place)]
      [:div.col-xs-2 (card-place)]
-     [:div.col-xs-2 (card-place)]
-
-     ]
-    ]])
+     [:div.col-xs-2 (card-place)]]]])
 
 (reagent/render-component [board]
                           (js/document.getElementById "app"))
 
 (fw/start)
-
