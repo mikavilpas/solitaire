@@ -45,8 +45,7 @@
                                     (l/card :spade :10))))
 
   ;; different suite and rank, rank is ascending -> yes!
-  (is (not (l/can-be-put-on-tableau (l/card :spade :10)
-                                    (l/card :heart :J))))
-  )
+  (is (l/can-be-put-on-tableau (l/card :spade :10)
+                               (l/card :heart :J))))
 
 (run-tests)

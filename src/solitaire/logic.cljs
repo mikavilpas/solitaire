@@ -17,10 +17,10 @@
 (defn same-suite [a b] (= (:suite a) (:suite b)))
 
 (defn can-be-put-on-tableau
-  "a is the new card, b is the card under it, possibly nil if there is
-  no card under"
+  "a is the new card, b is the card under it, or nil if there is no
+  card under"
   [a b]
   (let [different-suite (not (same-suite a b))
         rank-descending (< (rank-as-number a)
                            (rank-as-number b))]
-    (and different-suite different-rank rank-descending)))
+    (and different-suite rank-descending)))
