@@ -23,29 +23,29 @@
 
 (deftest can-be-put-on-tableau-test
   ;; same rank -> no
-  (is (not (l/can-be-put-on-tableau (l/card :heart :3)
-                                    (l/card :spade :3))))
+  (is (not (l/can-be-put-on-tableau? (l/card :heart :3)
+                                     (l/card :spade :3))))
 
   ;; same suite -> no
-  (is (not (l/can-be-put-on-tableau (l/card :spade :3)
-                                    (l/card :spade :4))))
+  (is (not (l/can-be-put-on-tableau? (l/card :spade :3)
+                                     (l/card :spade :4))))
 
   ;; different rank but same suite -> no
-  (is (not (l/can-be-put-on-tableau (l/card :spade :3)
-                                    (l/card :spade :4))))
+  (is (not (l/can-be-put-on-tableau? (l/card :spade :3)
+                                     (l/card :spade :4))))
 
   ;; different suite but same rank -> no
-  (is (not (l/can-be-put-on-tableau (l/card :heart :4)
-                                    (l/card :spade :4))))
+  (is (not (l/can-be-put-on-tableau? (l/card :heart :4)
+                                     (l/card :spade :4))))
 
   ;; different suite and rank, rank is descending -> no
-  (is (not (l/can-be-put-on-tableau (l/card :heart :5)
-                                    (l/card :spade :4))))
-  (is (not (l/can-be-put-on-tableau (l/card :heart :J)
-                                    (l/card :spade :10))))
+  (is (not (l/can-be-put-on-tableau? (l/card :heart :5)
+                                     (l/card :spade :4))))
+  (is (not (l/can-be-put-on-tableau? (l/card :heart :J)
+                                     (l/card :spade :10))))
 
   ;; different suite and rank, rank is ascending -> yes!
-  (is (l/can-be-put-on-tableau (l/card :spade :10)
-                               (l/card :heart :J))))
+  (is (l/can-be-put-on-tableau? (l/card :spade :10)
+                                (l/card :heart :J))))
 
 (run-tests)
