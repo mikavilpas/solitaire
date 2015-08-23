@@ -15,7 +15,7 @@
   (let [cards
         (for [suite [:spade :club :heart :diamond]
               rank [:1 :2 :3 :4 :5 :6 :7 :8 :9 :10]]
-          (card rank suite))]
+          (card suite rank))]
     (shuffle cards)))
 
 (defn can-be-put-on-tableau?
