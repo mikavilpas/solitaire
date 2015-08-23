@@ -26,3 +26,11 @@
         rank-descending (< (rank-as-number a)
                            (rank-as-number b))]
     (and different-suite rank-descending)))
+
+(defn card-symbol [card]
+  (when card
+    (case (:suite card)
+      :spade "♠"
+      :heart "♥"
+      :diamond "♦"
+      :club "♣")))
