@@ -43,7 +43,7 @@
      :foundation5 foundation5
      :foundation6 foundation6
      ;; A 2 3 4 5 6 7 8 9 10 J Q K
-     :foundations []
+     :tableau []
      :waste-heap {}
      :stock stock
      ;; user selects a card, it gets put here.
