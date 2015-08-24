@@ -12,10 +12,9 @@
 
 (def app-state (atom (l/new-game-state)))
 
-(defn select-card
+(defn select-card!
   "card-id is e.g. ♥2"
-  [card-id]
-  (print "selecting" card-id)
+  [card-id app-state]
   (swap! app-state
          assoc-in [:selected-card] card-id))
 
@@ -23,9 +22,11 @@
   [card-map]
   (let [suite (:suite card-map)
         id (str (l/card-symbol card-map)
-                (l/rank-as-number card-map))]
+                (l/rank-as-symbol card-map))]
     [:div.card-size.card-face
-     {:on-click #(select-card id)}
+     {:on-click #(select-card! id app-state)
+      :class (when (:selected? card-map)
+               "selected")}
      [:p.pull-left.card-content
       {:class (if (#{:diamond :heart} suite)
                 "red"
