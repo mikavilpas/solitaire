@@ -10,18 +10,27 @@
     (use 'figwheel-sidecar.repl-api)
     (cljs-repl)))
 
-(def app-state
-  (atom (l/new-game-state)))
+(def app-state (atom (l/new-game-state)))
 
-(defn card [card-map]
-  (let [suite (:suite card-map)]
+(defn select-card
+  "card-id is e.g. ♥2"
+  [card-id]
+  (print "selecting" card-id)
+  (swap! app-state
+         assoc-in [:selected-card] card-id))
+
+(defn card
+  [card-map]
+  (let [suite (:suite card-map)
+        id (str (l/card-symbol card-map)
+                (l/rank-as-number card-map))]
     [:div.card-size.card-face
+     {:on-click #(select-card id)}
      [:p.pull-left.card-content
       {:class (if (#{:diamond :heart} suite)
                 "red"
                 "black")}
-      (str (l/card-symbol card-map)
-           (l/rank-as-number card-map))]]))
+      id]]))
 
 (defn card-place
   ([]
@@ -31,7 +40,8 @@
      [:div.card-place (card c)]
      (card-place))))
 
-(defn board []
+(defn board
+  []
   [:div.container
    (comment [:h1 "Klondike Solitaire"])
    [:div.container.board

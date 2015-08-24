@@ -41,7 +41,10 @@
      ;; A 2 3 4 5 6 7 8 9 10 J Q K
      :foundations []
      :waste-heap {}
-     :stock stock}))
+     :stock stock
+     ;; user selects a card, it gets put here.
+     ;; then another click will move the selected card somewhere
+     :selected-card nil}))
 
 (defn can-be-put-on-tableau?
   "a is the new card, b is the card under it, or nil if there is no
