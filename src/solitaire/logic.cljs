@@ -66,3 +66,19 @@
       :heart "♥"
       :diamond "♦"
       :club "♣")))
+
+;; todo these need tests
+(defn- remove-card [game-state source-card-id]
+  )
+
+(defn- add-card [game-state source-card-id destination-card-id]
+  )
+
+(defn move-card [destination-card-id game-state]
+  (let [source-card-id (:selected-card-id game-state)]
+    (-> game-state
+        (remove-card source-card-id)
+        (add-card source-card-id destination-card-id))
+
+    ;; nothing to do
+    game-state))

@@ -12,11 +12,15 @@
 
 (def app-state (atom (l/new-game-state)))
 
-(defn select-card!
-  "card-id is e.g. ♥2"
+(defn select-or-move-card!
+  "card-id is e.g. ♥2, the card that was clicked"
   [card-id app-state]
-  (swap! app-state
-         assoc-in [:selected-card] card-id))
+  (let [different-card-selected (and (:selected-card-id @app-state)
+                                     (not (= (:selected-card-id @app-state)
+                                             card-id)))]
+    (if different-card-selected
+      (swap! app-state l/move-card card-id @app-state)
+      (swap! app-state assoc-in [:selected-card-id] card-id))))
 
 (defn card
   [card-map]
@@ -24,7 +28,7 @@
         id (str (l/card-symbol card-map)
                 (l/rank-as-symbol card-map))]
     [:div.card-size.card-face
-     {:on-click #(select-card! id app-state)
+     {:on-click #(select-or-move-card! id app-state)
       :class (when (:selected? card-map)
                "selected")}
      [:p.pull-left.card-content
