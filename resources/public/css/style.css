@@ -11,7 +11,7 @@ div.board {
 }
 
 .card-size {
-    height: 30vh;
+    height: 140px;
     /* TODO use max-height and min-height */
 }
 
@@ -20,6 +20,8 @@ div.board {
     border-radius: 5px;
     font-weight: bold;
     font-size: x-large;
+    /* offset-x | offset-y | blur-radius | color */
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
 }
 
 .card-id-bottom {
