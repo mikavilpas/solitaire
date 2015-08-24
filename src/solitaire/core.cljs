@@ -10,9 +10,8 @@
     (use 'figwheel-sidecar.repl-api)
     (cljs-repl)))
 
-;; I don't know solitaire terms so I just copy these from wikipedia
 (def app-state
-  (atom l/new-game-state))
+  (atom (l/new-game-state)))
 
 (defn card [card-map]
   (let [suite (:suite card-map)]
@@ -24,13 +23,13 @@
       (str (l/card-symbol card-map)
            (l/rank-as-number card-map))]]))
 
-(defn empty-card-place []
-  [:div.card-size.card-place])
-
-(defn card-place [card-list]
-  [:div.card-place
-   (when (not-empty card-list)
-     (card (first card-list)))])
+(defn card-place
+  ([]
+   [:div.card-place.card-size])
+  ([card-list]
+   (if-let [c (first card-list)]
+     [:div.card-place (card c)]
+     (card-place))))
 
 (defn board []
   [:div.container
@@ -39,10 +38,22 @@
     [:div.row
      ;; top row
      [:div.col-xs-2 (card-place (:stock @app-state))]
-     [:div.col-xs-2.col-xs-offset-2 (empty-card-place)]
-     [:div.col-xs-2 (empty-card-place)]
-     [:div.col-xs-2 (empty-card-place)]
-     [:div.col-xs-2 (empty-card-place)]]]])
+     [:div.col-xs-2.col-xs-offset-2 (card-place)]
+     [:div.col-xs-2 (card-place)]
+     [:div.col-xs-2 (card-place)]
+     [:div.col-xs-2 (card-place)]]
+
+    ;; spacing
+    [:div.row.card-size]
+
+    ;; bottom row
+    [:div.row.card-size
+     [:div.col-xs-2 (card-place (:foundation1 @app-state))]
+     [:div.col-xs-2 (card-place (:foundation2 @app-state))]
+     [:div.col-xs-2 (card-place)]
+     [:div.col-xs-2 (card-place)]
+     [:div.col-xs-2 (card-place)]
+     [:div.col-xs-2 (card-place)]]]])
 
 (reagent/render-component [board]
                           (js/document.getElementById "app"))
