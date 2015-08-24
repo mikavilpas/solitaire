@@ -31,7 +31,7 @@
         [foundation4 stock] (take-cards 6 stock)
         [foundation5 stock] (take-cards 6 stock)
         [foundation6 stock] (take-cards 6 stock)]
-    {;; K Q J 10 9 8 7 6 5 4 3 2 A
+    { ;; K Q J 10 9 8 7 6 5 4 3 2 A
      :foundation1 foundation1
      :foundation2 foundation2
      :foundation3 foundation3
