@@ -26,10 +26,18 @@
         stock deck
         ;; keep taking cards from the stock. the stock is "mutated" each time
         [foundation1 stock] (take-cards 6 stock)
-        [foundation2 stock] (take-cards 6 stock)]
+        [foundation2 stock] (take-cards 6 stock)
+        [foundation3 stock] (take-cards 6 stock)
+        [foundation4 stock] (take-cards 6 stock)
+        [foundation5 stock] (take-cards 6 stock)
+        [foundation6 stock] (take-cards 6 stock)]
     {;; K Q J 10 9 8 7 6 5 4 3 2 A
      :foundation1 foundation1
      :foundation2 foundation2
+     :foundation3 foundation3
+     :foundation4 foundation4
+     :foundation5 foundation5
+     :foundation6 foundation6
      ;; A 2 3 4 5 6 7 8 9 10 J Q K
      :foundations []
      :waste-heap {}

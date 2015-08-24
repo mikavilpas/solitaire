@@ -29,3 +29,7 @@ div.board {
 }
 
 .red {color: red;}
+
+.card-content {
+    margin-left: 5px;
+}

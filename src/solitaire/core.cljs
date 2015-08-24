@@ -16,7 +16,7 @@
 (defn card [card-map]
   (let [suite (:suite card-map)]
     [:div.card-size.card-face
-     [:p.pull-left
+     [:p.pull-left.card-content
       {:class (if (#{:diamond :heart} suite)
                 "red"
                 "black")}
@@ -50,10 +50,10 @@
     [:div.row.card-size
      [:div.col-xs-2 (card-place (:foundation1 @app-state))]
      [:div.col-xs-2 (card-place (:foundation2 @app-state))]
-     [:div.col-xs-2 (card-place)]
-     [:div.col-xs-2 (card-place)]
-     [:div.col-xs-2 (card-place)]
-     [:div.col-xs-2 (card-place)]]]])
+     [:div.col-xs-2 (card-place (:foundation3 @app-state))]
+     [:div.col-xs-2 (card-place (:foundation4 @app-state))]
+     [:div.col-xs-2 (card-place (:foundation5 @app-state))]
+     [:div.col-xs-2 (card-place (:foundation6 @app-state))]]]])
 
 (reagent/render-component [board]
                           (js/document.getElementById "app"))
