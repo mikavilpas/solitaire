@@ -12,6 +12,7 @@ div.board {
 
 .card-size {
     height: 30vh;
+    /* TODO use max-height and min-height */
 }
 
 .card-face {

@@ -18,6 +18,22 @@
           (card suite rank))]
     (shuffle cards)))
 
+(defn new-game-state []
+  (let [take-cards (fn [n remaining-deck]
+                     (split-at (rand-int n)
+                               remaining-deck))
+        stock deck
+        ;; keep taking cards from the stock. the stock is "mutated" each time
+        [tableau1 stock] (take-cards 6 stock)
+        [tableau2 stock] (take-cards 6 stock)]
+    {;; K Q J 10 9 8 7 6 5 4 3 2 A
+     :foundation1 tableau1
+     :foundation2 tableau2
+     ;; A 2 3 4 5 6 7 8 9 10 J Q K
+     :foundations []
+     :waste-heap {}
+     :stock stock}))
+
 (defn can-be-put-on-tableau?
   "a is the new card, b is the card under it, or nil if there is no
   card under"
