@@ -82,8 +82,7 @@
             card-places)))
 
 ;; todo shorten
-;; todo rename to add-cards
-(defn add-card
+(defn add-cards-on-top-of-card
   "Adds the card with source-cards on top of the card with
   destination-card-id."
   [game-state source-cards destination-card-id]

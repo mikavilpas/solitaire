@@ -66,11 +66,12 @@
          (l/remove-card {:foundation2 [(l/card :heart :3)]}
                         "♥3"))))
 
-(deftest add-card-test
+(deftest add-cards-on-top-of-card-test
   ;; add one card
-  (is (= (:foundation1 (l/add-card {:foundation1 (list (l/card :spade :8))}
-                                   [(l/card :heart :7)]
-                                   (l/card :spade :8)))
+  (is (= (:foundation1 (l/add-cards-on-top-of-card
+                        {:foundation1 (list (l/card :spade :8))}
+                        [(l/card :heart :7)]
+                        (l/card :spade :8)))
 
          [{:rank :7, :suite :heart, :id "♥7"}
           {:rank :8, :suite :spade, :id "♠8"}])))
