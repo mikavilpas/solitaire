@@ -81,8 +81,24 @@
             game-state
             card-places)))
 
-(defn- add-card [game-state source-card-id destination-card-id]
-  )
+;; todo shorten
+;; todo rename to add-cards
+(defn add-card
+  "Adds the card with source-cards on top of the card with
+  destination-card-id."
+  [game-state source-cards destination-card-id]
+  (reduce (fn [result card-place]
+            (update-in result [card-place]
+                       (fn [cards]
+                         (let [[before target-and-rest]
+                               (split-with #(not (card-ids-equal destination-card-id
+                                                                 (:id %)))
+                                           cards)]
+                           (if (not-empty before)
+                             (flatten [source-cards before target-and-rest])
+                             cards)))))
+          game-state
+          card-places))
 
 (defn move-card [destination-card-id game-state]
   (let [source-card-id (:selected-card-id game-state)]
