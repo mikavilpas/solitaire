@@ -71,9 +71,14 @@
                            (rank-as-number b))]
     (and different-suite rank-descending)))
 
+(defn- card-ids-equal [card-id card]
+  (= card-id (:id card)))
+
 ;; todo these need tests
 (defn- remove-card [game-state source-card-id]
-  )
+  (let [same-id (partial card-ids-equal source-card-id)]
+    (update-in game-state [:foundation1] (fn [cards]
+                                           (remove same-id cards)))))
 
 (defn- add-card [game-state source-card-id destination-card-id]
   )
