@@ -26,6 +26,16 @@
                                    :output-to "resources/public/js/compiled/solitaire.js"
                                    :output-dir "resources/public/js/compiled/out"
                                    :source-map-timestamp true }}
+                       {:id "test"
+                        :source-paths ["src" "test"]
+
+                        :figwheel { :on-jsload "solitaire.core/on-js-reload"}
+
+                        :compiler {:main solitaire.core
+                                   :asset-path "js/compiled/out"
+                                   :output-to "resources/public/js/compiled/test.js"
+                                   :output-dir "resources/public/js/compiled/out"
+                                   :source-map-timestamp true }}
                        {:id "min"
                         :source-paths ["src"]
                         :compiler {:output-to "resources/public/js/compiled/solitaire.js"
