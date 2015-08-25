@@ -7,13 +7,25 @@
 
 (defn same-suite [a b] (= (:suite a) (:suite b)))
 
-(defn rank-as-number [card]
-  (let [rank-values (zipmap ranks-ascending (range 1 15))]
-    ((:rank card) rank-values)))
-
 (defn rank-as-symbol
   [card]
   (name (:rank card)))
+
+(defn card-symbol [card]
+  (when card
+    (case (:suite card)
+      :spade "♠"
+      :heart "♥"
+      :diamond "♦"
+      :club "♣")))
+
+(defn card-id [card]
+  (str (card-symbol card)
+       (rank-as-symbol card)))
+
+(defn rank-as-number [card]
+  (let [rank-values (zipmap ranks-ascending (range 1 15))]
+    ((:rank card) rank-values)))
 
 (def deck
   (let [cards
@@ -58,14 +70,6 @@
         rank-descending (< (rank-as-number a)
                            (rank-as-number b))]
     (and different-suite rank-descending)))
-
-(defn card-symbol [card]
-  (when card
-    (case (:suite card)
-      :spade "♠"
-      :heart "♥"
-      :diamond "♦"
-      :club "♣")))
 
 ;; todo these need tests
 (defn- remove-card [game-state source-card-id]
