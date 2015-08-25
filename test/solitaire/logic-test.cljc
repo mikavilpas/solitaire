@@ -56,5 +56,14 @@
   (is (l/can-be-put-on-tableau? (l/card :spade :10)
                                 (l/card :heart :J))))
 
-#?(:cljs
-   (run-tests))
+(deftest remove-card-test
+  (is (= {:foundation1 () :foundation2 () :foundation3 () :foundation4 ()
+          :foundation5 () :foundation6 () :tableau () :waste-heap () :stock ()}
+         (l/remove-card {:foundation1 [(l/card :heart :3)]}
+                        "♥3")))
+  (is (= {:foundation2 () :foundation1 () :foundation3 () :foundation4 ()
+          :foundation5 () :foundation6 () :tableau () :waste-heap () :stock ()}
+         (l/remove-card {:foundation2 [(l/card :heart :3)]}
+                        "♥3"))))
+
+#?(:cljs (run-tests))

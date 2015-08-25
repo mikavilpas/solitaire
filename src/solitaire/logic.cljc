@@ -1,7 +1,13 @@
 (ns solitaire.logic)
 
 (defn card [suite rank]
-  {:rank rank, :suite suite})
+  (let [id (str (case suite
+                  :spade "♠"
+                  :heart "♥"
+                  :diamond "♦"
+                  :club "♣")
+                (name rank))]
+    {:rank rank, :suite suite, :id id}))
 
 (def ranks-ascending [:A :1 :2 :3 :4 :5 :6 :7 :8 :9 :10 :J :Q :K])
 
@@ -10,18 +16,6 @@
 (defn rank-as-symbol
   [card]
   (name (:rank card)))
-
-(defn card-symbol [card]
-  (when card
-    (case (:suite card)
-      :spade "♠"
-      :heart "♥"
-      :diamond "♦"
-      :club "♣")))
-
-(defn card-id [card]
-  (str (card-symbol card)
-       (rank-as-symbol card)))
 
 (defn rank-as-number [card]
   (let [rank-values (zipmap ranks-ascending (range 1 15))]
@@ -33,6 +27,10 @@
               rank [:1 :2 :3 :4 :5 :6 :7 :8 :9 :10 :J :Q :K :A]]
           (card suite rank))]
     (shuffle cards)))
+
+(def card-places [:foundation1 :foundation2 :foundation3
+                  :foundation4 :foundation5 :foundation6
+                  :tableau :waste-heap :stock])
 
 (defn new-game-state []
   ;; I don't know solitaire terms so I just copy these from wikipedia
@@ -75,10 +73,13 @@
   (= card-id (:id card)))
 
 ;; todo these need tests
-(defn- remove-card [game-state source-card-id]
+(defn remove-card [game-state source-card-id]
   (let [same-id (partial card-ids-equal source-card-id)]
-    (update-in game-state [:foundation1] (fn [cards]
-                                           (remove same-id cards)))))
+    (reduce (fn [result card-place]
+              (update-in result [card-place] (fn [cards]
+                                               (remove same-id cards))))
+            game-state
+            card-places)))
 
 (defn- add-card [game-state source-card-id destination-card-id]
   )
