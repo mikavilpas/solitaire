@@ -13,7 +13,9 @@
 ;; tests
 (deftest same-suite-test
   (is (l/same-suite (l/card :heart :3)
-                    (l/card :heart :4))))
+                    (l/card :heart :4)))
+  (is (not (l/same-suite (l/card :heart :3)
+                         (l/card :spade :4)))))
 
 (deftest rank-as-number-test
   (is (= (range 1 15)
