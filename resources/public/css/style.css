@@ -41,3 +41,17 @@ div.board {
     -ms-user-select:none;
     user-select:none;
 }
+
+.test-result {
+    padding: 5vh;
+    height: 30vh;
+    font-weight: 800;
+}
+
+.test-failed {
+    background-color: darkred;
+}
+
+.test-success {
+    background-color: darkgreen;
+}

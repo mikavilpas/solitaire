@@ -65,6 +65,6 @@
      [:div.col-xs-2 (card-place (:foundation6 @app-state))]]]])
 
 (reagent/render-component [board]
-                          (js/document.getElementById "app"))
+                          (.getElementById js/document "app"))
 
 (fw/start)

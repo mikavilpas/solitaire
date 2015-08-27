@@ -1,7 +1,7 @@
 (ns ^:figwheel-always
   solitaire.test-runner
   (:require [reagent.core :as reagent :refer [atom]]
-            [cljs.test :as test]
+            [cljs.test]
             [solitaire.logic-test]
             [figwheel.client :as fw])
   (:require-macros [cljs.test :refer (run-tests)]))
@@ -19,7 +19,10 @@
 (defn test-report []
   [:div.container
    [:div.col-xs-12
-    [:p (str "Test result: " (:success? @test-result))]]])
+    [:p {:class (str "test-result " (if (:success? @test-result)
+                                      "test-success"
+                                      "test-failed"))}
+     (str "Test results: " (:success? @test-result))]]])
 
 (defmethod cljs.test/report [:cljs.test/default :end-run-tests] [m]
   (let [success? (cljs.test/successful? m)]
@@ -30,4 +33,3 @@
                           (js/document.getElementById "test"))
 
 (run-tests 'solitaire.logic-test)
-
