@@ -1,20 +1,12 @@
-(ns ^:figwheel-always solitaire.logic-test
-    #?(:cljs
-       (:require [solitaire.logic :as l]
-                 [cljs.test :as test])
-       :clj
-       (:require [solitaire.logic :as l]
-                 [clojure.test :as test :refer (is deftest)]))
-    #?(:cljs
-       (:require-macros [cljs.test :refer (is deftest run-tests)])))
-
-#?(:cljs
-   ;; nice test reporting to the js console
-   (defmethod cljs.test/report [:cljs.test/default :end-run-tests] [m]
-     (when (not (cljs.test/successful? m))
-       (println "Tests FAILED"))))
-
-
+(ns solitaire.logic-test
+  #?(:cljs
+     (:require [solitaire.logic :as l]
+               [cljs.test :as test])
+     :clj
+     (:require [solitaire.logic :as l]
+               [clojure.test :as test :refer (is deftest)]))
+  #?(:cljs
+     (:require-macros [cljs.test :refer (is deftest)])))
 
 ;; tests
 (deftest same-suite-test
@@ -75,5 +67,3 @@
 
          [{:rank :7, :suite :heart, :id "♥7"}
           {:rank :8, :suite :spade, :id "♠8"}])))
-
-#?(:cljs (run-tests))

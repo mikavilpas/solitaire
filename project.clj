@@ -10,32 +10,29 @@
                  [reagent "0.5.0"]]
 
   :plugins [[lein-cljsbuild "1.0.5"]
-            [lein-figwheel "0.3.5"]]
+            [lein-figwheel "0.3.7"]]
 
   :source-paths ["src" "test"]
 
-  :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
+  :clean-targets ^{:protect false} ["resources/public/js/compiled"
+                                    "resources/public/js/test"
+                                    "target"]
 
   :cljsbuild {:builds [{:id "dev"
-                        :source-paths ["src" "test"]
-
-                        :figwheel { :on-jsload "solitaire.core/on-js-reload" }
-
+                        :source-paths ["src"]
                         :compiler {:main solitaire.core
                                    :asset-path "js/compiled/out"
                                    :output-to "resources/public/js/compiled/solitaire.js"
                                    :output-dir "resources/public/js/compiled/out"
-                                   :source-map-timestamp true }}
+                                   :optimizations :none
+                                   :source-map true}}
                        {:id "test"
                         :source-paths ["src" "test"]
-
-                        :figwheel { :on-jsload "solitaire.core/on-js-reload"}
-
-                        :compiler {:main solitaire.core
-                                   :asset-path "js/compiled/out"
-                                   :output-to "resources/public/js/compiled/test.js"
-                                   :output-dir "resources/public/js/compiled/out"
-                                   :source-map-timestamp true }}
+                        :source-map true
+                        :compiler {:main solitaire.test-runner
+                                   :output-to "resources/public/js/test/test.js"
+                                   :output-dir "resources/public/js/test/out"
+                                   :asset-path "js/test/out"}}
                        {:id "min"
                         :source-paths ["src"]
                         :compiler {:output-to "resources/public/js/compiled/solitaire.js"
