@@ -17,17 +17,17 @@
 (defonce test-result (atom {:success? false}))
 
 (defn test-report []
-  [:p (str "test result: " (:success? @test-result))])
-
-
-
+  [:div.container
+   [:div.col-xs-12
+    [:p (str "Test result: " (:success? @test-result))]]])
 
 (defmethod cljs.test/report [:cljs.test/default :end-run-tests] [m]
   (let [success? (cljs.test/successful? m)]
-    (swap! test-result assoc-in [:success?] success?)
-    (reagent/render-component [test-report]
-                              (js/document.getElementById "test"))))
+    (swap! test-result assoc-in [:success?] success?)))
 
+
+(reagent/render-component [test-report]
+                          (js/document.getElementById "test"))
 
 (run-tests 'solitaire.logic-test)
 
