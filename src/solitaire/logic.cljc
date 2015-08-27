@@ -103,7 +103,8 @@
   (let [source-card-id (:selected-card-id game-state)]
     (-> game-state
         (remove-card source-card-id)
-        (add-card source-card-id destination-card-id))
+        ;; (add-card source-card-id destination-card-id)
+        )
 
     ;; nothing to do
     game-state))

@@ -25,7 +25,7 @@
 (defn card
   [card-map]
   (let [suite (:suite card-map)
-        id (l/card-id card-map)]
+        id (:id card-map)]
     [:div.card-size.card-face
      {:on-click #(select-or-move-card! id app-state)
       :class (when (:selected? card-map)
