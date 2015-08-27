@@ -5,11 +5,6 @@
 
 (enable-console-print!)
 
-(comment
-  (do
-    (use 'figwheel-sidecar.repl-api)
-    (cljs-repl)))
-
 (def app-state (atom (l/new-game-state)))
 
 (defn select-or-move-card!
