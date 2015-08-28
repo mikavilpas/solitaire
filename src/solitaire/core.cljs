@@ -62,7 +62,9 @@
      [:div.col-xs-2 (card-place (:foundation3 @app-state))]
      [:div.col-xs-2 (card-place (:foundation4 @app-state))]
      [:div.col-xs-2 (card-place (:foundation5 @app-state))]
-     [:div.col-xs-2 (card-place (:foundation6 @app-state))]]]])
+     [:div.col-xs-2 (card-place (:foundation6 @app-state))]]]
+   [:div.row
+    [:a {:href "test.html"} "Tests"]]])
 
 (reagent/render-component [board]
                           (.getElementById js/document "app"))
