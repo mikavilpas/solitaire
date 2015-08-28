@@ -65,5 +65,25 @@
                         [(l/card :heart :7)]
                         (l/card :spade :8)))
 
-         [{:rank :7, :suite :heart, :id "♥7"}
-          {:rank :8, :suite :spade, :id "♠8"}])))
+         [{:rank :7, :suite :heart, :id "♥7", :facing-up true}
+          {:rank :8, :suite :spade, :id "♠8", :facing-up true}])))
+
+(deftest new-game-state-test
+  ;; stock cards should face down
+  (is (every? (comp not :facing-up)
+              (:stock (l/new-game-state)))))
+
+(deftest turn-card-test
+  ;; turns card upside down
+  (is (false? (-> (l/turn-card
+                   {:foundation1 [{:rank :3 ,:suite :heart ,
+                                   :id "♥3" ,:facing-up true}]}
+                   "♥3")
+                  :foundation1 first :facing-up)))
+
+  ;; turns card back up! :3
+  (is (true? (-> (l/turn-card
+                  {:foundation1 [{:rank :3 ,:suite :heart ,
+                                  :id "♥3" ,:facing-up false}]}
+                  "♥3")
+                 :foundation1 first :facing-up)))) 

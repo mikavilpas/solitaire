@@ -17,19 +17,25 @@
       (swap! app-state l/move-card card-id @app-state)
       (swap! app-state assoc-in [:selected-card-id] card-id))))
 
+(defn turn-card! [card-id app-state]
+  (swap! app-state l/turn-card card-id))
+
 (defn card
   [card-map]
-  (let [suite (:suite card-map)
-        id (:id card-map)]
-    [:div.card-size.card-face
-     {:on-click #(select-or-move-card! id app-state)
-      :class (when (:selected? card-map)
-               "selected")}
-     [:p.pull-left.card-content
-      {:class (if (#{:diamond :heart} suite)
-                "red"
-                "black")}
-      id]]))
+  (let [id (:id card-map)]
+    (if (:facing-up card-map)
+      [:div.card-size.card-face
+       {:on-click #(select-or-move-card! id app-state)
+        :class (when (:selected? card-map)
+                 "selected")}
+       (when (:facing-up card-map)
+         [:p.pull-left.card-content
+          {:class (if (#{:diamond :heart} (:suite card-map))
+                    "red"
+                    "black")}
+          id])]
+      [:div.card-size.facing-down
+       {:on-click #(turn-card! id app-state)}])))
 
 (defn card-place
   ([]
