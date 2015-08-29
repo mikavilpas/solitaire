@@ -1,6 +1,6 @@
 div.board {
     background-image: url("../img/table.jpg");
-    max-width: 800px;
+    background-size: cover;
 }
 
 .card-place {
@@ -8,16 +8,18 @@ div.board {
     border-radius: 5px;
     margin-top: 5px;
     margin-bottom: 5px;
+    width: 10vw;
+    /* offset-x | offset-y | blur-radius | color */
+    box-shadow: 0px 0px 2px rgba(0,0,0,0.5);
 }
 
 .card-size {
-    height: 140px;
-    /* TODO use max-height and min-height */
+    height: 15vw;
 }
 
 .card-face {
     background-color: #EEEEEE;
-    border-radius: 5px;
+    border-radius: 5pt;
     font-weight: bold;
     font-size: x-large;
     /* offset-x | offset-y | blur-radius | color */
@@ -58,6 +60,7 @@ div.board {
 
 .facing-down {
     background-image: url("../img/card-back.jpg");
-    background-repeat: no-repeat;
-    background-size: contain;
+    border-radius: 5pt;
+    background-position: center;
+    background-size: cover;
 }

@@ -52,11 +52,14 @@
    [:div.container.board
     [:div.row
      ;; top row
-     [:div.col-xs-2 (card-place (:stock @app-state))]
-     [:div.col-xs-2.col-xs-offset-2 (card-place)]
-     [:div.col-xs-2 (card-place)]
-     [:div.col-xs-2 (card-place)]
-     [:div.col-xs-2 (card-place)]]
+     [:div.col-xs-4
+      [:div.pull-left (card-place (:stock @app-state))]
+      [:div.col-xs-1 (card-place)]]
+     [:div.col-xs-offset-1.col-xs-7.pull-right
+      [:div.col-xs-3 (card-place)]
+      [:div.col-xs-3 (card-place)]
+      [:div.col-xs-3 (card-place)]
+      [:div.col-xs-3 (card-place)]]]
 
     ;; spacing
     [:div.row.card-size]
@@ -68,7 +71,9 @@
      [:div.col-xs-2 (card-place (:foundation3 @app-state))]
      [:div.col-xs-2 (card-place (:foundation4 @app-state))]
      [:div.col-xs-2 (card-place (:foundation5 @app-state))]
-     [:div.col-xs-2 (card-place (:foundation6 @app-state))]]]
+     [:div.col-xs-2 (card-place (:foundation6 @app-state))]]
+    ;; spacing
+    [:div.row.card-size]]
    [:div.row
     [:a {:href "test.html"} "Tests"]]])
 
