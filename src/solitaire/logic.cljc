@@ -37,21 +37,21 @@
                                remaining-deck))
         stock new-deck
         ;; keep taking cards from the stock. the stock is "mutated" each time
-        [foundation1 stock] (take-cards 6 stock)
-        [foundation2 stock] (take-cards 6 stock)
-        [foundation3 stock] (take-cards 6 stock)
-        [foundation4 stock] (take-cards 6 stock)
-        [foundation5 stock] (take-cards 6 stock)
-        [foundation6 stock] (take-cards 6 stock)]
+        [tableau1 stock] (take-cards 6 stock)
+        [tableau2 stock] (take-cards 6 stock)
+        [tableau3 stock] (take-cards 6 stock)
+        [tableau4 stock] (take-cards 6 stock)
+        [tableau5 stock] (take-cards 6 stock)
+        [tableau6 stock] (take-cards 6 stock)]
     { ;; K Q J 10 9 8 7 6 5 4 3 2 A
-     :foundation1 foundation1
-     :foundation2 foundation2
-     :foundation3 foundation3
-     :foundation4 foundation4
-     :foundation5 foundation5
-     :foundation6 foundation6
+     :foundations []
      ;; A 2 3 4 5 6 7 8 9 10 J Q K
-     :tableau []
+     :tableau1 tableau1
+     :tableau2 tableau2
+     :tableau3 tableau3
+     :tableau4 tableau4
+     :tableau5 tableau5
+     :tableau6 tableau6
      :waste-heap {}
      :stock (turn-face-down stock)
      ;; user selects a card, it gets put here.
@@ -70,9 +70,9 @@
 (defn- card-ids-equal [card-id card]
   (= card-id (:id card)))
 
-(def card-places [:foundation1 :foundation2 :foundation3
-                  :foundation4 :foundation5 :foundation6
-                  :tableau :waste-heap :stock])
+(def card-places [:tableau1 :tableau2 :tableau3
+                  :tableau4 :tableau5 :tableau6
+                  :foundations :waste-heap :stock])
 
 ;; utility function
 (defn update-cards [game-state update-function]

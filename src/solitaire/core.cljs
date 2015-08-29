@@ -66,12 +66,12 @@
 
     ;; bottom row
     [:div.row.card-size
-     [:div.col-xs-2 (card-place (:foundation1 @app-state))]
-     [:div.col-xs-2 (card-place (:foundation2 @app-state))]
-     [:div.col-xs-2 (card-place (:foundation3 @app-state))]
-     [:div.col-xs-2 (card-place (:foundation4 @app-state))]
-     [:div.col-xs-2 (card-place (:foundation5 @app-state))]
-     [:div.col-xs-2 (card-place (:foundation6 @app-state))]]
+     [:div.col-xs-2 (card-place (:tableau1 @app-state))]
+     [:div.col-xs-2 (card-place (:tableau2 @app-state))]
+     [:div.col-xs-2 (card-place (:tableau3 @app-state))]
+     [:div.col-xs-2 (card-place (:tableau4 @app-state))]
+     [:div.col-xs-2 (card-place (:tableau5 @app-state))]
+     [:div.col-xs-2 (card-place (:tableau6 @app-state))]]
     ;; spacing
     [:div.row.card-size]]
    [:div.row

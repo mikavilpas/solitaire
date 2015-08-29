@@ -49,19 +49,19 @@
                                 (l/card :heart :J))))
 
 (deftest remove-card-test
-  (is (= {:foundation1 () :foundation2 () :foundation3 () :foundation4 ()
-          :foundation5 () :foundation6 () :tableau () :waste-heap () :stock ()}
-         (l/remove-card {:foundation1 [(l/card :heart :3)]}
+  (is (= {:tableau1 () :tableau2 () :tableau3 () :tableau4 ()
+          :tableau5 () :tableau6 () :foundations () :waste-heap () :stock ()}
+         (l/remove-card {:tableau1 [(l/card :heart :3)]}
                         "♥3")))
-  (is (= {:foundation2 () :foundation1 () :foundation3 () :foundation4 ()
-          :foundation5 () :foundation6 () :tableau () :waste-heap () :stock ()}
-         (l/remove-card {:foundation2 [(l/card :heart :3)]}
+  (is (= {:tableau2 () :tableau1 () :tableau3 () :tableau4 ()
+          :tableau5 () :tableau6 () :foundations () :waste-heap () :stock ()}
+         (l/remove-card {:tableau2 [(l/card :heart :3)]}
                         "♥3"))))
 
 (deftest add-cards-on-top-of-card-test
   ;; add one card
-  (is (= (:foundation1 (l/add-cards-on-top-of-card
-                        {:foundation1 (list (l/card :spade :8))}
+  (is (= (:tableau1 (l/add-cards-on-top-of-card
+                        {:tableau1 (list (l/card :spade :8))}
                         [(l/card :heart :7)]
                         (l/card :spade :8)))
 
@@ -76,14 +76,14 @@
 (deftest turn-card-test
   ;; turns card upside down
   (is (false? (-> (l/turn-card
-                   {:foundation1 [{:rank :3 ,:suite :heart ,
+                   {:tableau1 [{:rank :3 ,:suite :heart ,
                                    :id "♥3" ,:facing-up true}]}
                    "♥3")
-                  :foundation1 first :facing-up)))
+                  :tableau1 first :facing-up)))
 
   ;; turns card back up! :3
   (is (true? (-> (l/turn-card
-                  {:foundation1 [{:rank :3 ,:suite :heart ,
+                  {:tableau1 [{:rank :3 ,:suite :heart ,
                                   :id "♥3" ,:facing-up false}]}
                   "♥3")
-                 :foundation1 first :facing-up)))) 
+                 :tableau1 first :facing-up)))) 
