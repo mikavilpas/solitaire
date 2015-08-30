@@ -58,15 +58,17 @@
          (l/remove-card {:tableau2 [(l/card :heart :3)]}
                         "♥3"))))
 
-(deftest add-cards-on-top-of-card-test
-  ;; add one card
-  (is (= (:tableau1 (l/add-cards-on-top-of-card
-                        {:tableau1 (list (l/card :spade :8))}
-                        [(l/card :heart :7)]
-                        (l/card :spade :8)))
+;;todo
 
-         [{:rank :7, :suite :heart, :id "♥7", :facing-up true}
-          {:rank :8, :suite :spade, :id "♠8", :facing-up true}])))
+(deftest move-cards-on-place-test
+  ;; add one card
+  (is (= [{:rank :8, :suite :spade, :id "♠8", :facing-up true}
+          {:rank :7, :suite :heart, :id "♥7", :facing-up true}]
+
+         (:tableau1 (l/move-cards-on-place
+                     {:tableau1 [(l/card :spade :8)]}
+                     [(l/card :heart :7)]
+                     :tableau1)))))
 
 (deftest new-game-state-test
   ;; stock cards should face down
