@@ -73,17 +73,31 @@
   (is (every? (comp not :facing-up)
               (:stock (l/new-game-state)))))
 
-(deftest turn-card-test
-  ;; turns card upside down
-  (is (false? (-> (l/turn-card
-                   {:tableau1 [{:rank :3 ,:suite :heart ,
-                                   :id "♥3" ,:facing-up true}]}
-                   "♥3")
-                  :tableau1 first :facing-up)))
+(deftest card-place-test
+  (is (= :stock
+         (l/card-place {:stock [{:rank :3, :suite :heart,
+                                 :id "♥3", :facing-up false}]}
+                       "♥3"))))
 
-  ;; turns card back up! :3
-  (is (true? (-> (l/turn-card
-                  {:tableau1 [{:rank :3 ,:suite :heart ,
-                                  :id "♥3" ,:facing-up false}]}
-                  "♥3")
-                 :tableau1 first :facing-up)))) 
+(deftest turn-card-test
+  ;; turns card facing up
+  (is (= {:rank :3, :suite :heart, :id "♥3", :facing-up true}
+         (-> (l/turn-card {:tableau1 [{:rank :3 ,:suite :heart ,
+                                       :id "♥3" ,:facing-up false}]}
+                          (l/card :heart :3))
+             :tableau1 first)))
+
+  ;; turns a card in the stock and moves it to the waste-heap
+
+  (is (= {:stock []
+          :tableau1 []
+          :tableau2 []
+          :tableau3 []
+          :tableau4 []
+          :tableau5 []
+          :tableau6 []
+          :foundations []
+          :waste-heap [{:rank :3, :suite :heart, :id "♥3", :facing-up true}]}
+         (l/turn-card {:stock [{:rank :3, :suite :heart,
+                                :id "♥3", :facing-up false}]}
+                      (l/card :heart :3)))))

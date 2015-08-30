@@ -52,7 +52,7 @@
      :tableau4 tableau4
      :tableau5 tableau5
      :tableau6 tableau6
-     :waste-heap {}
+     :waste-heap []
      :stock (turn-face-down stock)
      ;; user selects a card, it gets put here.
      ;; then another click will move the selected card somewhere
@@ -75,53 +75,61 @@
                   :foundations :waste-heap :stock])
 
 ;; utility function
-(defn update-cards [game-state update-function]
+(defn update-cards
+  "update-function receives two arguments: all the cards in a specific
+  pile, and the name of the pile, as in card-places"
+  [game-state update-function]
   (reduce (fn [result card-place]
             (update-in result [card-place]
-                       (fn [cards] (update-function cards))))
+                       (fn [cards] (update-function cards card-place))))
           game-state
           card-places))
 
-(defn update-card [game-state update-function]
+(defn update-card
+  "like update-cards, except update-function gets only one card at a
+  time, as well as the name of the pile the cards are from, as
+  specified in card-places. Returns the place of the card and the
+  modified card."
+  [game-state card-id update-function]
   (update-cards game-state
-                (fn [cards] (map update-function cards))))
+                (fn [cards card-place]
+                  (map (fn [card]
+                         (if (= card-id (:id card))
+                           (update-function card card-place)
+                           card))
+                       cards))))
 
-;; todo these need tests
 (defn remove-card [game-state source-card-id]
   (let [same-id (partial card-ids-equal source-card-id)]
     (update-cards game-state
-                  (fn [cards]
+                  (fn [cards card-place]
                     (remove same-id cards)))))
 
-;; todo shorten
-(defn add-cards-on-top-of-card
-  "Adds the card with source-cards on top of the card with
-  destination-card-id."
-  [game-state source-cards destination-card-id]
-  (update-cards
-   game-state
-   (fn [cards]
-     (let [[before target-and-rest]
-           (split-with #(not (card-ids-equal destination-card-id
-                                             (:id %)))
-                       cards)]
-       (if (not-empty before)
-         (flatten [source-cards before target-and-rest])
-         cards)))))
+(defn move-cards-on-place [game-state cards card-place]
+  (update-in game-state
+             [card-place]
+             concat
+             cards))
 
-(defn turn-card [game-state card-id]
-  (update-card game-state
-               (fn [card]
-                 (if (= (:id card) card-id)
-                   (update-in card [:facing-up] not)
-                   card))))
+(defn card-place [game-state card-id]
+  (let [same-id (partial card-ids-equal card-id)]
+    (loop [places card-places]
+      (when-let [place (first places)]
+        (if (some same-id (get game-state place))
+          place
+          (recur (next places)))))))
 
-(defn move-card [destination-card-id game-state]
-  (let [source-card-id (:selected-card-id game-state)]
-    (-> game-state
-        (remove-card source-card-id)
-        ;; (add-card source-card-id destination-card-id)
-        )
+(defn turn-card [game-state card-to-turn]
+  (let [game-state (update-card
+                    game-state
+                    (:id card-to-turn)
+                    (fn [card card-place]
+                      (assoc-in card [:facing-up] true)))]
 
-    ;; nothing to do
-    game-state))
+    ;; if card is on stock, move to waste
+    (if (= :stock
+           (card-place game-state (:id card-to-turn)))
+      (-> game-state
+          (remove-card (:id card-to-turn))
+          (move-cards-on-place [card-to-turn] :waste-heap))
+      game-state)))
