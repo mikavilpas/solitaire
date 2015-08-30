@@ -54,7 +54,7 @@
      ;; top row
      [:div.col-xs-4
       [:div.pull-left (card-place @app-state :stock)]
-      [:div.col-xs-1 (card-place)]]
+      [:div.col-xs-1 (card-place @app-state :waste-heap)]]
      [:div.col-xs-offset-1.col-xs-7.pull-right
       [:div.col-xs-3 (card-place)]
       [:div.col-xs-3 (card-place)]
