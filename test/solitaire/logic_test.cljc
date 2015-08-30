@@ -62,8 +62,8 @@
 
 (deftest move-cards-on-place-test
   ;; add one card
-  (is (= [{:rank :8, :suite :spade, :id "♠8", :facing-up true}
-          {:rank :7, :suite :heart, :id "♥7", :facing-up true}]
+  (is (= '({:rank :7, :suite :heart, :id "♥7", :facing-up true}
+           {:rank :8, :suite :spade, :id "♠8", :facing-up true})
 
          (:tableau1 (l/move-cards-on-place
                      {:tableau1 [(l/card :spade :8)]}
@@ -85,7 +85,6 @@
              :tableau1 first)))
 
   ;; turns a card in the stock and moves it to the waste-heap
-
   (is (= {:stock []
           :tableau1 []
           :tableau2 []

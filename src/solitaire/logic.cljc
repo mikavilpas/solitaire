@@ -108,8 +108,7 @@
 (defn move-cards-on-place [game-state cards card-place]
   (update-in game-state
              [card-place]
-             concat
-             cards))
+             #(concat cards %)))
 
 (defn turn-card [game-state card-to-turn card-place-name]
   (let [game-state (update-card
