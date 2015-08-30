@@ -1,13 +1,14 @@
 (ns solitaire.logic)
 
-(defn card [suite rank]
+(defn card [suite rank & {:keys [facing-up]
+                          :or {facing-up true}}]
   (let [id (str (case suite
                   :spade "♠"
                   :heart "♥"
                   :diamond "♦"
                   :club "♣")
                 (name rank))]
-    {:rank rank, :suite suite, :id id, :facing-up true}))
+    {:rank rank, :suite suite, :id id, :facing-up facing-up}))
 
 (def ranks-ascending [:A :1 :2 :3 :4 :5 :6 :7 :8 :9 :10 :J :Q :K])
 
@@ -105,21 +106,25 @@
                   (fn [cards card-place]
                     (remove same-id cards)))))
 
-(defn move-cards-on-place [game-state cards card-place]
+(defn add-cards-on-place [game-state cards card-place]
   (update-in game-state
              [card-place]
              #(concat cards %)))
 
-(defn turn-card [game-state card-to-turn card-place-name]
-  (let [game-state (update-card
-                    game-state
-                    (:id card-to-turn)
-                    (fn [card card-place]
-                      (assoc-in card [:facing-up] true)))]
+(defn move-card-on-place [game-state card card-place]
+  (-> game-state
+      (remove-card (:id card))
+      (add-cards-on-place [card] card-place)))
 
-    ;; if card is on stock, move to waste
-    (if (= :stock card-place-name)
-      (-> game-state
-          (remove-card (:id card-to-turn))
-          (move-cards-on-place [card-to-turn] :waste-heap))
-      game-state)))
+(defn turn-card [game-state card-to-turn card-place-name]
+  (let [game-state
+        ;; if card is on stock, move to waste
+        (if (= :stock card-place-name)
+          (move-card-on-place game-state card-to-turn :waste-heap)
+          game-state)]
+    (update-card
+     game-state
+     (:id card-to-turn)
+     (fn [card card-place]
+       (assoc-in card [:facing-up] true)))))
+

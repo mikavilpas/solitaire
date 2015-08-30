@@ -60,12 +60,12 @@
 
 ;;todo
 
-(deftest move-cards-on-place-test
+(deftest add-cards-on-place-test
   ;; add one card
   (is (= '({:rank :7, :suite :heart, :id "♥7", :facing-up true}
            {:rank :8, :suite :spade, :id "♠8", :facing-up true})
 
-         (:tableau1 (l/move-cards-on-place
+         (:tableau1 (l/add-cards-on-place
                      {:tableau1 [(l/card :spade :8)]}
                      [(l/card :heart :7)]
                      :tableau1)))))
@@ -78,8 +78,8 @@
 (deftest turn-card-test
   ;; turns card facing up
   (is (= {:rank :3, :suite :heart, :id "♥3", :facing-up true}
-         (-> (l/turn-card {:tableau1 [{:rank :3 :suite :heart
-                                       :id "♥3" :facing-up false}]}
+         (-> (l/turn-card {:tableau1 '({:rank :3 :suite :heart
+                                        :id "♥3" :facing-up false})}
                           (l/card :heart :3)
                           :tableau1)
              :tableau1 first)))
@@ -96,5 +96,5 @@
           :waste-heap [{:rank :3, :suite :heart, :id "♥3", :facing-up true}]}
          (l/turn-card {:stock [{:rank :3, :suite :heart,
                                 :id "♥3", :facing-up false}]}
-                      (l/card :heart :3)
+                      (l/card :heart :3 :facing-up false)
                       :stock))))
