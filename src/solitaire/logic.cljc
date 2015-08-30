@@ -111,15 +111,7 @@
              concat
              cards))
 
-(defn card-place [game-state card-id]
-  (let [same-id (partial card-ids-equal card-id)]
-    (loop [places card-places]
-      (when-let [place (first places)]
-        (if (some same-id (get game-state place))
-          place
-          (recur (next places)))))))
-
-(defn turn-card [game-state card-to-turn]
+(defn turn-card [game-state card-to-turn card-place-name]
   (let [game-state (update-card
                     game-state
                     (:id card-to-turn)
@@ -127,8 +119,7 @@
                       (assoc-in card [:facing-up] true)))]
 
     ;; if card is on stock, move to waste
-    (if (= :stock
-           (card-place game-state (:id card-to-turn)))
+    (if (= :stock card-place-name)
       (-> game-state
           (remove-card (:id card-to-turn))
           (move-cards-on-place [card-to-turn] :waste-heap))
