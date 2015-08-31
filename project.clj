@@ -20,7 +20,7 @@
 
   :cljsbuild {:builds [{:id "dev"
                         :source-paths ["src"]
-                        :compiler {:main solitaire.core
+                        :compiler {:main solitaire.view.core
                                    :asset-path "js/compiled/out"
                                    :output-to "resources/public/js/compiled/solitaire.js"
                                    :output-dir "resources/public/js/compiled/out"
@@ -36,7 +36,7 @@
                        {:id "min"
                         :source-paths ["src"]
                         :compiler {:output-to "resources/public/js/compiled/solitaire.js"
-                                   :main solitaire.core
+                                   :main solitaire.view.core
                                    :optimizations :advanced
                                    :pretty-print false}}]}
 

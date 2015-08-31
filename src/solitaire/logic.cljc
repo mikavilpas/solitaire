@@ -55,9 +55,10 @@
      :tableau6 tableau6
      :waste-heap []
      :stock (turn-face-down stock)
-     ;; user selects a card, it gets put here.
-     ;; then another click will move the selected card somewhere
-     :selected-card nil}))
+     ;; user selects a place, it gets put here.
+     ;; then another click will move the selected cards there, if
+     ;; possible
+     :selected-place nil}))
 
 (defn can-be-put-on-tableau?
   "a is the new card, b is the card under it, or nil if there is no

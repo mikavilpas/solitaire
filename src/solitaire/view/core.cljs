@@ -1,34 +1,19 @@
-(ns ^:figwheel-always solitaire.core
+(ns ^:figwheel-always solitaire.view.core
     (:require [reagent.core :as reagent :refer [atom]]
               [figwheel.client :as fw]
-              [solitaire.logic :as l]))
+              [solitaire.logic :as l]
+              [solitaire.view.actions :as a]))
 
 (enable-console-print!)
 
 (defonce app-state (atom (l/new-game-state)))
-
-(defn select-or-move-card!
-  "card-id is e.g. ♥2, the card that was clicked"
-  [card-id app-state]
-  (let [different-card-selected (and (:selected-card-id @app-state)
-                                     (not (= (:selected-card-id @app-state)
-                                             card-id)))]
-    (if different-card-selected
-      ;; (swap! app-state l/move-card card-id @app-state)
-      (swap! app-state assoc-in [:selected-card-id] card-id))))
-
-(defn turn-card! [app-state card card-place-name]
-  (swap! app-state l/turn-card card card-place-name))
-
-(defn reset-stock! [app-state]
-  (swap! app-state l/reset-stock))
 
 (defn card
   [card-map card-place-name]
   (let [id (:id card-map)]
     (if (:facing-up card-map)
       [:div.card-size.card-face
-       {:on-click #(select-or-move-card! id app-state)
+       {:on-click #(a/select-or-move-card! id app-state card-place-name)
         :class (when (:selected? card-map) "selected")}
        (when (:facing-up card-map)
          [:p.pull-left.card-content
@@ -37,7 +22,7 @@
                     "black")}
           id])]
       [:div.card-size.facing-down
-       {:on-click #(turn-card! app-state card-map card-place-name)}])))
+       {:on-click #(a/turn-card! app-state card-map card-place-name)}])))
 
 (defn card-place
   ([]
@@ -47,7 +32,7 @@
      [:div.card-place (card c card-place-name)]
      [:div.card-place.card-size
       (when (= :stock card-place-name)
-        {:on-click #(reset-stock! app-state)})])))
+        {:on-click #(a/reset-stock! app-state)})])))
 
 (defn board
   []
@@ -60,10 +45,10 @@
       [:div.pull-left (card-place app-state :stock)]
       [:div.col-xs-1 (card-place app-state :waste-heap)]]
      [:div.col-xs-offset-1.col-xs-7.pull-right
-      [:div.col-xs-3 (card-place)]
-      [:div.col-xs-3 (card-place)]
-      [:div.col-xs-3 (card-place)]
-      [:div.col-xs-3 (card-place)]]]
+      [:div.col-xs-3 (card-place app-state :foundation1)]
+      [:div.col-xs-3 (card-place app-state :foundation2)]
+      [:div.col-xs-3 (card-place app-state :foundation3)]
+      [:div.col-xs-3 (card-place app-state :foundation4)]]]
 
     ;; spacing
     [:div.row.card-size]
