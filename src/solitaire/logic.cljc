@@ -79,18 +79,12 @@
 (defn update-cards
   "update-function receives two arguments: all the cards in a specific
   pile, and the name of the pile, as in card-places"
-
-  ;; update all cards
-  ([game-state update-function]
-   (reduce (fn [result card-place]
-             (update-in result [card-place]
-                        (fn [cards] (update-function cards card-place))))
-           game-state
-           card-places))
-
-  ;; only update the cards in the given place
-  ([game-state place update-function]
-   (update-in game-state [place] update-function)))
+  [game-state update-function]
+  (reduce (fn [result card-place]
+            (update-in result [card-place]
+                       (fn [cards] (update-function cards card-place))))
+          game-state
+          card-places))
 
 (defn update-card
   "like update-cards, except update-function gets only one card at a
@@ -141,7 +135,7 @@
   [game-state]
   (-> game-state
       (move-cards-on-place (:waste-heap game-state) :stock)
-      (update-cards :stock (fn [cards]
-                             (-> cards
-                                 turn-face-down
-                                 reverse)))))
+      (update-in [:stock] (fn [cards]
+                            (-> cards
+                                turn-face-down
+                                reverse)))))
