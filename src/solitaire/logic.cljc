@@ -79,12 +79,18 @@
 (defn update-cards
   "update-function receives two arguments: all the cards in a specific
   pile, and the name of the pile, as in card-places"
-  [game-state update-function]
-  (reduce (fn [result card-place]
-            (update-in result [card-place]
-                       (fn [cards] (update-function cards card-place))))
-          game-state
-          card-places))
+
+  ;; update all cards
+  ([game-state update-function]
+   (reduce (fn [result card-place]
+             (update-in result [card-place]
+                        (fn [cards] (update-function cards card-place))))
+           game-state
+           card-places))
+
+  ;; only update the cards in the given place
+  ([game-state place update-function]
+   (update-in game-state [place] update-function)))
 
 (defn update-card
   "like update-cards, except update-function gets only one card at a
@@ -100,8 +106,10 @@
                            card))
                        cards))))
 
-(defn remove-card [game-state source-card-id]
-  (let [same-id (partial card-ids-equal source-card-id)]
+(defn remove-cards [game-state source-card-ids]
+  (let [same-id (fn [card]
+                  (some #(= % (:id card))
+                        source-card-ids))]
     (update-cards game-state
                   (fn [cards card-place]
                     (remove same-id cards)))))
@@ -111,16 +119,16 @@
              [card-place]
              #(concat cards %)))
 
-(defn move-card-on-place [game-state card card-place]
+(defn move-cards-on-place [game-state cards card-place]
   (-> game-state
-      (remove-card (:id card))
-      (add-cards-on-place [card] card-place)))
+      (remove-cards (map :id cards))
+      (add-cards-on-place cards card-place)))
 
 (defn turn-card [game-state card-to-turn card-place-name]
   (let [game-state
         ;; if card is on stock, move to waste
         (if (= :stock card-place-name)
-          (move-card-on-place game-state card-to-turn :waste-heap)
+          (move-cards-on-place game-state [card-to-turn] :waste-heap)
           game-state)]
     (update-card
      game-state
@@ -128,3 +136,12 @@
      (fn [card card-place]
        (assoc-in card [:facing-up] true)))))
 
+(defn reset-stock
+  "Moves the cards from waste-heap to the stock"
+  [game-state]
+  (-> game-state
+      (move-cards-on-place (:waste-heap game-state) :stock)
+      (update-cards :stock (fn [cards]
+                             (-> cards
+                                 turn-face-down
+                                 reverse)))))

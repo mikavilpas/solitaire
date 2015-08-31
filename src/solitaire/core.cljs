@@ -5,7 +5,7 @@
 
 (enable-console-print!)
 
-(def app-state (atom (l/new-game-state)))
+(defonce app-state (atom (l/new-game-state)))
 
 (defn select-or-move-card!
   "card-id is e.g. ♥2, the card that was clicked"
@@ -20,14 +20,16 @@
 (defn turn-card! [app-state card card-place-name]
   (swap! app-state l/turn-card card card-place-name))
 
+(defn reset-stock! [app-state]
+  (swap! app-state l/reset-stock))
+
 (defn card
   [card-map card-place-name]
   (let [id (:id card-map)]
     (if (:facing-up card-map)
       [:div.card-size.card-face
        {:on-click #(select-or-move-card! id app-state)
-        :class (when (:selected? card-map)
-                 "selected")}
+        :class (when (:selected? card-map) "selected")}
        (when (:facing-up card-map)
          [:p.pull-left.card-content
           {:class (if (#{:diamond :heart} (:suite card-map))
@@ -41,9 +43,11 @@
   ([]
    [:div.card-place.card-size])
   ([app-state card-place-name]
-   (if-let [c (first (get app-state card-place-name))]
+   (if-let [c (first (get @app-state card-place-name))]
      [:div.card-place (card c card-place-name)]
-     (card-place))))
+     [:div.card-place.card-size
+      (when (= :stock card-place-name)
+        {:on-click #(reset-stock! app-state)})])))
 
 (defn board
   []
@@ -53,8 +57,8 @@
     [:div.row
      ;; top row
      [:div.col-xs-4
-      [:div.pull-left (card-place @app-state :stock)]
-      [:div.col-xs-1 (card-place @app-state :waste-heap)]]
+      [:div.pull-left (card-place app-state :stock)]
+      [:div.col-xs-1 (card-place app-state :waste-heap)]]
      [:div.col-xs-offset-1.col-xs-7.pull-right
       [:div.col-xs-3 (card-place)]
       [:div.col-xs-3 (card-place)]
@@ -66,12 +70,12 @@
 
     ;; bottom row
     [:div.row.card-size
-     [:div.col-xs-2 (card-place @app-state :tableau1)]
-     [:div.col-xs-2 (card-place @app-state :tableau2)]
-     [:div.col-xs-2 (card-place @app-state :tableau3)]
-     [:div.col-xs-2 (card-place @app-state :tableau4)]
-     [:div.col-xs-2 (card-place @app-state :tableau5)]
-     [:div.col-xs-2 (card-place @app-state :tableau6)]]
+     [:div.col-xs-2 (card-place app-state :tableau1)]
+     [:div.col-xs-2 (card-place app-state :tableau2)]
+     [:div.col-xs-2 (card-place app-state :tableau3)]
+     [:div.col-xs-2 (card-place app-state :tableau4)]
+     [:div.col-xs-2 (card-place app-state :tableau5)]
+     [:div.col-xs-2 (card-place app-state :tableau6)]]
     ;; spacing
     [:div.row.card-size]]
    [:div.row

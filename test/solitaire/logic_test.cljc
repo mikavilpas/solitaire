@@ -51,14 +51,12 @@
 (deftest remove-card-test
   (is (= {:tableau1 () :tableau2 () :tableau3 () :tableau4 ()
           :tableau5 () :tableau6 () :foundations () :waste-heap () :stock ()}
-         (l/remove-card {:tableau1 [(l/card :heart :3)]}
-                        "♥3")))
+         (l/remove-cards {:tableau1 [(l/card :heart :3)]}
+                         ["♥3"])))
   (is (= {:tableau2 () :tableau1 () :tableau3 () :tableau4 ()
           :tableau5 () :tableau6 () :foundations () :waste-heap () :stock ()}
-         (l/remove-card {:tableau2 [(l/card :heart :3)]}
-                        "♥3"))))
-
-;;todo
+         (l/remove-cards {:tableau2 [(l/card :heart :3)]}
+                         ["♥3"]))))
 
 (deftest add-cards-on-place-test
   ;; add one card
@@ -98,3 +96,19 @@
                                 :id "♥3", :facing-up false}]}
                       (l/card :heart :3 :facing-up false)
                       :stock))))
+
+(deftest reset-stock-test
+  (is (= {:waste-heap [],
+          :tableau1 [],
+          :tableau2 [],
+          :tableau3 [],
+          :tableau4 [],
+          :tableau5 [],
+          :tableau6 [],
+          :foundations [],
+          :stock [{:rank :5, :suite :heart, :id "♥5", :facing-up false}
+                  {:rank :4, :suite :heart, :id "♥4", :facing-up false}
+                  {:rank :3, :suite :heart, :id "♥3", :facing-up false}]}
+         (l/reset-stock {:waste-heap [(l/card :heart :3)
+                                      (l/card :heart :4)
+                                      (l/card :heart :5)]}))))
