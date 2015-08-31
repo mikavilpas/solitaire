@@ -10,8 +10,8 @@
 [1 2 3 "hello"]
 
 ;; symbolic data
-best-user
 (def best-user "asd")
+best-user
 
 '(1 2 3 "hello")
 'hello
