@@ -7,7 +7,8 @@
             (empty? (get @app-state card-place-name)))
         (swap! app-state assoc-in [:selected-place] nil)
 
-        true
+        ;; valid card place?
+        ((set l/card-places) card-place-name)
         (swap! app-state assoc-in [:selected-place] card-place-name)))
 
 (defn turn-card! [app-state card card-place-name]
