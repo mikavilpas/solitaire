@@ -6,7 +6,7 @@
 
 (enable-console-print!)
 
-(defonce app-state (atom (l/new-game-state)))
+(def app-state (atom (l/new-game-state)))
 
 (defn selectable [card-place-name]
   {:on-click #(a/select-or-move! app-state card-place-name)
@@ -23,22 +23,27 @@
      [:div.selected-overlay
       (selectable card-place-name)
       (when (:facing-up card-map)
-        [:p.pull-left.card-content
+        [:p.card-content
          {:class (if (#{:diamond :heart} (:suite card-map))
                    "red"
                    "black")}
          (:id card-map)])]]))
 
 (defn card-place
-  ([app-state card-place-name]
-   (if-let [c (first (get @app-state card-place-name))]
-     [:div.card-place
-      [:div.selected-overlay (selectable card-place-name)
-       (card c card-place-name)]]
-     [:div.card-place.card-size
-      (merge (selectable card-place-name)
-             (when (= :stock card-place-name)
-               {:on-click #(a/reset-stock! app-state)}))])))
+  ([app-state card-place-name & {:keys [fanned?]
+                                 :or {fanned? false}}]
+   (let [cards (get @app-state card-place-name)]
+     (if (not (empty? cards))
+       [:div.card-place
+        [:div.selected-overlay (selectable card-place-name)
+         (if fanned?
+           [:div.overlapping-cards
+            (for [c cards] (card c card-place-name))]
+           (card (first cards) card-place-name))]]
+       [:div.card-place.card-size
+        (merge (selectable card-place-name)
+               (when (= :stock card-place-name)
+                 {:on-click #(a/reset-stock! app-state)}))]))))
 
 (defn board
   []
@@ -61,12 +66,12 @@
 
     ;; bottom row
     [:div.row.card-size
-     [:div.col-xs-2 (card-place app-state :tableau1)]
-     [:div.col-xs-2 (card-place app-state :tableau2)]
-     [:div.col-xs-2 (card-place app-state :tableau3)]
-     [:div.col-xs-2 (card-place app-state :tableau4)]
-     [:div.col-xs-2 (card-place app-state :tableau5)]
-     [:div.col-xs-2 (card-place app-state :tableau6)]]
+     [:div.col-xs-2 (card-place app-state :tableau1 :fanned? true)]
+     [:div.col-xs-2 (card-place app-state :tableau2 :fanned? true)]
+     [:div.col-xs-2 (card-place app-state :tableau3 :fanned? true)]
+     [:div.col-xs-2 (card-place app-state :tableau4 :fanned? true)]
+     [:div.col-xs-2 (card-place app-state :tableau5 :fanned? true)]
+     [:div.col-xs-2 (card-place app-state :tableau6 :fanned? true)]]
     ;; spacing
     [:div.row.card-size]]
    [:div.row

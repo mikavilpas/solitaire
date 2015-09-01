@@ -17,6 +17,10 @@ div.board {
     height: 15vw;
 }
 
+.overlapping-cards .card-size {
+    margin-top: -12vw;
+}
+
 .card-face {
     background-color: #EEEEEE;
     border-radius: 5pt;
@@ -35,6 +39,8 @@ div.board {
 .red {color: red;}
 
 .card-content {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
     margin-left: 5px;
     cursor: default;
     -webkit-touch-callout:none;
