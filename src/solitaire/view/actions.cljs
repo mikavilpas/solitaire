@@ -3,8 +3,12 @@
 
 ;; todo disallow selecting stock somehow
 (defn select-or-move! [app-state card-place-name]
-  (print "setting :selected-place to " card-place-name)
-  (swap! app-state assoc-in [:selected-place] card-place-name))
+  (cond (or (= :stock card-place-name)
+            (empty? (get @app-state card-place-name)))
+        (swap! app-state assoc-in [:selected-place] nil)
+
+        true
+        (swap! app-state assoc-in [:selected-place] card-place-name)))
 
 (defn turn-card! [app-state card card-place-name]
   (swap! app-state l/turn-card card card-place-name))

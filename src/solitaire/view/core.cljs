@@ -16,7 +16,9 @@
 
 (defn card
   [card-map card-place-name]
-  (if (:facing-up card-map)
+  (if-not (:facing-up card-map)
+    [:div.card-size.facing-down
+     {:on-click #(a/turn-card! app-state card-map card-place-name)}]
     [:div.card-size.card-face
      [:div.selected-overlay
       (selectable card-place-name)
@@ -25,9 +27,7 @@
          {:class (if (#{:diamond :heart} (:suite card-map))
                    "red"
                    "black")}
-         (:id card-map)])]]
-    [:div.card-size.facing-down
-     {:on-click #(a/turn-card! app-state card-map card-place-name)}]))
+         (:id card-map)])]]))
 
 (defn card-place
   ([app-state card-place-name]
@@ -36,10 +36,9 @@
       [:div.selected-overlay (selectable card-place-name)
        (card c card-place-name)]]
      [:div.card-place.card-size
-      [:div.selected-overlay
-       (merge (selectable card-place-name)
-              (when (= :stock card-place-name)
-                {:on-click #(a/reset-stock! app-state)}))]])))
+      (merge (selectable card-place-name)
+             (when (= :stock card-place-name)
+               {:on-click #(a/reset-stock! app-state)}))])))
 
 (defn board
   []
