@@ -32,6 +32,10 @@
 (defn turn-face-down [cards]
   (map #(assoc-in % [:facing-up] false) cards))
 
+(defn- turn-rest-down [cards]
+  (reverse (cons (first cards)
+                 (turn-face-down (rest cards)))))
+
 (defn new-game-state []
   (let [take-cards (fn [n remaining-deck]
                      (split-at (rand-int n)
@@ -47,12 +51,12 @@
     { ;; K Q J 10 9 8 7 6 5 4 3 2 A
      :foundations []
      ;; A 2 3 4 5 6 7 8 9 10 J Q K
-     :tableau1 tableau1
-     :tableau2 tableau2
-     :tableau3 tableau3
-     :tableau4 tableau4
-     :tableau5 tableau5
-     :tableau6 tableau6
+     :tableau1 (turn-rest-down tableau1)
+     :tableau2 (turn-rest-down tableau2)
+     :tableau3 (turn-rest-down tableau3)
+     :tableau4 (turn-rest-down tableau4)
+     :tableau5 (turn-rest-down tableau5)
+     :tableau6 (turn-rest-down tableau6)
      :waste-heap []
      :stock (turn-face-down stock)
      ;; user selects a place, it gets put here.
