@@ -1,5 +1,5 @@
 (ns solitaire.view.actions
-  (:require [solitaire.logic :as l]))
+  (:require [solitaire.core.logic :as l]))
 
 ;; todo disallow selecting stock somehow
 (defn select-or-move! [app-state card-place-name]

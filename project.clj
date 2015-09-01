@@ -19,7 +19,7 @@
                                     "target"]
 
   :cljsbuild {:builds [{:id "dev"
-                        :source-paths ["src"]
+                        :source-paths ["src/"]
                         :compiler {:main solitaire.view.core
                                    :asset-path "js/compiled/out"
                                    :output-to "resources/public/js/compiled/solitaire.js"
@@ -27,7 +27,7 @@
                                    :optimizations :none
                                    :source-map true}}
                        {:id "test"
-                        :source-paths ["src" "test"]
+                        :source-paths ["src/solitaire/core" "test"]
                         :source-map true
                         :compiler {:main solitaire.test-runner
                                    :output-to "resources/public/js/test/test.js"

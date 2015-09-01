@@ -1,7 +1,7 @@
 (ns ^:figwheel-always solitaire.view.core
     (:require [reagent.core :as reagent :refer [atom]]
               [figwheel.client :as fw]
-              [solitaire.logic :as l]
+              [solitaire.core.logic :as l]
               [solitaire.view.actions :as a]))
 
 (enable-console-print!)
@@ -77,6 +77,7 @@
      [:div.col-xs-2 (card-place app-state :tableau6 :fanned? true)]]
     ;; spacing
     [:div.row.card-size]]
+
    [:div.container [:h3
                     [:a {:href "test.html"} "Tests!"]]]])
 

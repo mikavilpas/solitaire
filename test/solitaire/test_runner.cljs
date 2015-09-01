@@ -2,7 +2,7 @@
   solitaire.test-runner
   (:require [reagent.core :as reagent :refer [atom]]
             [cljs.test]
-            [solitaire.logic-test]
+            [solitaire.core.logic-test]
             [figwheel.client :as fw])
   (:require-macros [cljs.test :refer (run-tests)]))
 
@@ -39,4 +39,4 @@
 (reagent/render-component [test-report]
                           (js/document.getElementById "test"))
 
-(run-tests 'solitaire.logic-test)
+(run-tests 'solitaire.core.logic-test)

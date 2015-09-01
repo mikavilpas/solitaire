@@ -1,4 +1,4 @@
-(ns solitaire.logic)
+(ns solitaire.core.logic)
 
 (defn card [suite rank & {:keys [facing-up]
                           :or {facing-up true}}]

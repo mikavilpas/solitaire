@@ -1,9 +1,9 @@
-(ns solitaire.logic-test
+(ns solitaire.core.logic-test
   #?(:cljs
-     (:require [solitaire.logic :as l]
+     (:require [solitaire.core.logic :as l]
                [cljs.test :as test])
      :clj
-     (:require [solitaire.logic :as l]
+     (:require [solitaire.core.logic :as l]
                [clojure.test :as test :refer (is deftest)]))
   #?(:cljs
      (:require-macros [cljs.test :refer (is deftest)])))
