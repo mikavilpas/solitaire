@@ -33,8 +33,10 @@
   (map #(assoc-in % [:facing-up] false) cards))
 
 (defn- turn-rest-down [cards]
-  (reverse (cons (first cards)
-                 (turn-face-down (rest cards)))))
+  (if (> (count cards) 1)
+    (reverse (cons (first cards)
+                   (turn-face-down (rest cards))))
+    cards))
 
 (defn new-game-state []
   (let [take-cards (fn [n remaining-deck]
