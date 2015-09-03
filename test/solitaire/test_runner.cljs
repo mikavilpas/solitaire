@@ -40,8 +40,3 @@
                           (js/document.getElementById "test"))
 
 (run-tests 'solitaire.core.logic-test)
-
-(defn product []
-  (reduce (fn [result n]
-            (+ result n))
-          (range 1 6)))
