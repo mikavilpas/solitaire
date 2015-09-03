@@ -80,6 +80,15 @@
                           :tableau1)
              :tableau1 first)))
 
+  ;; should not turn card if some other card is on top of it
+  (is (= [{:rank :3, :suite :heart, :id "♥3", :facing-up true}
+          {:rank :K, :suite :spade, :id "♠K", :facing-up false}]
+         (-> (l/turn-card {:tableau1 [(l/card :heart :3)
+                                      (l/card :spade :K :facing-up false)]}
+                          (l/card :spade :K)
+                          :tableau1)
+             :tableau1)))
+
   ;; turns a card in the stock and moves it to the waste-heap
   (is (= {:tableau1 (),
           :foundation2 (),

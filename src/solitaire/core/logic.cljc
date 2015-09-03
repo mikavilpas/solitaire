@@ -140,16 +140,27 @@
                        target-card-place))
 
 (defn turn-card [game-state card-to-turn card-place-name]
-  (let [game-state
-        ;; if card is on stock, move to waste
-        (if (= :stock card-place-name)
-          (move-cards-on-place game-state [card-to-turn] :waste-heap)
-          game-state)]
-    (update-card
-     game-state
-     (:id card-to-turn)
-     (fn [card card-place]
-       (assoc-in card [:facing-up] true)))))
+  (cond (= :stock card-place-name)
+        (-> game-state
+            (move-cards-on-place [card-to-turn] :waste-heap)
+            (update-card
+             (:id card-to-turn)
+             (fn [card card-place]
+               (assoc-in card [:facing-up] true))))
+
+        true
+        (do (let [topmost-card (-> (get game-state card-place-name)
+                                   first)]
+
+              ;; should turn card only when it's on the top of the pile
+              (if (card-ids-equal (:id topmost-card) card-to-turn)
+                (update-card
+                 game-state
+                 (:id card-to-turn)
+                 (fn [card card-place]
+                   (assoc-in card [:facing-up] true)))
+
+                game-state)))))
 
 (defn reset-stock
   "Moves the cards from waste-heap to the stock"
