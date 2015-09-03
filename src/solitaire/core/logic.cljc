@@ -122,7 +122,7 @@
 (defn add-cards-on-place [game-state cards card-place]
   (update-in game-state
              [card-place]
-             #(concat cards %)))
+             #(concat % cards)))
 
 ;; todo needs validation
 (defn move-cards-on-place
