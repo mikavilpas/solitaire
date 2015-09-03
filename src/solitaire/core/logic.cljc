@@ -51,7 +51,10 @@
         [tableau5 stock] (take-cards 6 stock)
         [tableau6 stock] (take-cards 6 stock)]
     { ;; K Q J 10 9 8 7 6 5 4 3 2 A
-     :foundations []
+     :foundation1 []
+     :foundation2 []
+     :foundation3 []
+     :foundation4 []
      ;; A 2 3 4 5 6 7 8 9 10 J Q K
      :tableau1 (turn-rest-down tableau1)
      :tableau2 (turn-rest-down tableau2)
@@ -67,12 +70,12 @@
      :selected-place nil}))
 
 (defn can-be-put-on-tableau?
-  "a is the new card, b is the card under it, or nil if there is no
-  card under"
-  [a b]
-  (let [different-suite (not (same-suite a b))
-        rank-descending (< (rank-as-number a)
-                           (rank-as-number b))]
+  "new-card is the card that will be placed on top, card-under is the
+  card under it, or nil if there is no card under"
+  [new-card card-under]
+  (let [different-suite (not (same-suite new-card card-under))
+        rank-descending (< (rank-as-number new-card)
+                           (rank-as-number card-under))]
     (and different-suite rank-descending)))
 
 (defn- card-ids-equal [card-id card]
@@ -80,7 +83,8 @@
 
 (def card-places [:tableau1 :tableau2 :tableau3
                   :tableau4 :tableau5 :tableau6
-                  :foundations :waste-heap :stock])
+                  :foundation1 :foundation2 :foundation3
+                  :foundation4 :waste-heap :stock])
 
 ;; utility function
 (defn update-cards
@@ -120,10 +124,20 @@
              [card-place]
              #(concat cards %)))
 
-(defn move-cards-on-place [game-state cards card-place]
-  (-> game-state
-      (remove-cards (map :id cards))
-      (add-cards-on-place cards card-place)))
+;; todo needs validation
+(defn move-cards-on-place
+  ([game-state cards card-place]
+   (-> game-state
+       (remove-cards (map :id cards))
+       (add-cards-on-place cards card-place)
+       (assoc :selected-place nil))))
+
+(defn move-card-place-cards-to [game-state
+                                source-card-place
+                                target-card-place]
+  (move-cards-on-place game-state
+                       (get game-state source-card-place)
+                       target-card-place))
 
 (defn turn-card [game-state card-to-turn card-place-name]
   (let [game-state
