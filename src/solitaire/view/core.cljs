@@ -52,8 +52,8 @@
 
 (defn board []
   [:div
+   [:h1 "mika.protacon.fi:3449"]
    [:div.board.container-fluid
-    (comment [:h1 "Klondike Solitaire"])
     [:div.row
      ;; top row
      [:div.col-xs-4
