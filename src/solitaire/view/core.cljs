@@ -52,7 +52,7 @@
 
 (defn board []
   [:div
-   [:h1 "mika.protacon.fi:3449"]
+   [:h1 "Klondike solitaire"]
    [:div.board.container-fluid
     [:div.row
      ;; top row
@@ -77,12 +77,15 @@
      [:div.col-xs-2 (card-place app-state :tableau6 :fanned? true)]]
     ;; spacing
     [:div.row.card-size]]
-
    [:div.container [:h3
-                    [:a {:href "test.html"} "Tests!"]]]])
+                    [:a {:href "test.html"} "Tests!"]]]
+
+   (comment [:h1 "mika.protacon.fi:3449"])])
+
+(fw/start {:build-id "dev"
+           ;;:on-jsload #(print "loaded")
+           })
 
 (reagent/render-component [board]
-                          (.getElementById js/document "app"))
-
-(fw/start)
+                          (js/document.getElementById "app"))
 
