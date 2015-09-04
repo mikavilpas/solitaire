@@ -12,7 +12,7 @@
     (cljs-repl)))
 
 (enable-console-print!)
-(fw/start)
+(fw/start {:build-id "test"})
 
 (defonce test-result (atom {:success? false}))
 
