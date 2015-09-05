@@ -48,7 +48,7 @@
            [:div (card (first cards) card-place-name)
             [:div.overlapping-cards
              (doall (for [c (rest cards)] (card c card-place-name)))]]
-           (card (first cards) card-place-name))]]))))
+           (card (last cards) card-place-name))]]))))
 
 (defn board []
   [:div
@@ -78,9 +78,7 @@
     ;; spacing
     [:div.row.card-size]]
    [:div.container [:h3
-                    [:a {:href "test.html"} "Tests!"]]]
-
-   (comment [:h1 "mika.protacon.fi:3449"])])
+                    [:a {:href "test.html"} "Tests!"]]]])
 
 (fw/start {:build-id "dev"
            ;;:on-jsload #(print "loaded")
