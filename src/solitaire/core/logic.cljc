@@ -20,7 +20,7 @@
 
 (defn rank-as-number [card]
   (let [rank-values (zipmap ranks-ascending (range 1 15))]
-    ((:rank card) rank-values)))
+    (get rank-values (:rank card))))
 
 (def new-deck
   (let [cards
@@ -73,10 +73,14 @@
   "new-card is the card that will be placed on top, card-under is the
   card under it, or nil if there is no card under"
   [new-card card-under]
-  (let [different-suite (not (same-suite new-card card-under))
-        rank-descending (< (rank-as-number new-card)
-                           (rank-as-number card-under))]
-    (and different-suite rank-descending)))
+  (if (and (= :K (:rank new-card))
+           (not card-under))
+    ;; a king can be put on the tableau by itself
+    true
+    (let [different-suite (not (same-suite new-card card-under))
+          rank-descending (= (rank-as-number new-card)
+                             (dec (rank-as-number card-under)))]
+      (and different-suite rank-descending))))
 
 (defn- card-ids-equal [card-id card]
   (= card-id (:id card)))
@@ -122,9 +126,8 @@
 (defn add-cards-on-place [game-state cards card-place]
   (update-in game-state
              [card-place]
-             #(concat cards %)))
+             #(concat % cards)))
 
-;; todo needs validation
 (defn move-cards-on-place
   ([game-state cards card-place]
    (-> game-state
@@ -132,12 +135,38 @@
        (add-cards-on-place cards card-place)
        (assoc :selected-place nil))))
 
+(defn sublists
+  "Example: called with [1 2 3], will return '((1 2 3) (2 3) (3))"
+  [elements]
+  (take (count elements)
+        (iterate next elements)))
+
+(defn get-moveable-cards [game-state
+                          source-card-place
+                          target-card-place]
+  (let [source-cards (filter :facing-up (get game-state source-card-place))
+        target-card (last (get game-state target-card-place))]
+    ;; todo only allow moving a single card from :stock
+    (cond
+      (#{:tableau1 :tableau2 :tableau3
+         :tableau4 :tableau5 :tableau6} target-card-place)
+      (some (fn [cards]
+              (when (can-be-put-on-tableau? (first cards)
+                                            target-card)
+                cards))
+            (sublists source-cards)))))
+
 (defn move-card-place-cards-to [game-state
                                 source-card-place
                                 target-card-place]
-  (move-cards-on-place game-state
-                       (get game-state source-card-place)
-                       target-card-place))
+  ;; get the greatest set of cards that can be moved in sequence
+  (if-let [cards-to-move (get-moveable-cards game-state
+                                             source-card-place
+                                             target-card-place)]
+    (move-cards-on-place game-state
+                         (get game-state source-card-place)
+                         target-card-place)
+    game-state))
 
 (defn turn-card [game-state card-to-turn card-place-name]
   (cond (= :stock card-place-name)

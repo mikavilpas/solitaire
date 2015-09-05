@@ -38,13 +38,19 @@
   (is (not (l/can-be-put-on-tableau? (l/card :heart :4)
                                      (l/card :spade :4))))
 
-  ;; different suite and rank, rank is descending -> no
-  (is (not (l/can-be-put-on-tableau? (l/card :heart :5)
-                                     (l/card :spade :4))))
+  ;; rank must be descending by exactly 1
+  (is (not (l/can-be-put-on-tableau? (l/card :heart :3)
+                                     (l/card :club :5))))
+
+  ;; different suite and rank, rank is ascending -> no
+  (is (not (l/can-be-put-on-tableau? (l/card :heart :3)
+                                     (l/card :spade :2))))
   (is (not (l/can-be-put-on-tableau? (l/card :heart :J)
                                      (l/card :spade :10))))
 
-  ;; different suite and rank, rank is ascending -> yes!
+  ;; different suite and rank, rank is descending -> yes!
+  (is (l/can-be-put-on-tableau? (l/card :spade :4)
+                                (l/card :heart :5)))
   (is (l/can-be-put-on-tableau? (l/card :spade :10)
                                 (l/card :heart :J))))
 
@@ -58,8 +64,8 @@
 
 (deftest add-cards-on-place-test
   ;; add one card
-  (is (= '({:rank :7, :suite :heart, :id "♥7", :facing-up true}
-           {:rank :8, :suite :spade, :id "♠8", :facing-up true})
+  (is (= '({:rank :8, :suite :spade, :id "♠8", :facing-up true}
+           {:rank :7, :suite :heart, :id "♥7", :facing-up true})
 
          (:tableau1 (l/add-cards-on-place
                      {:tableau1 [(l/card :spade :8)]}
@@ -130,3 +136,34 @@
          (l/reset-stock {:waste-heap [(l/card :heart :3)
                                       (l/card :heart :4)
                                       (l/card :heart :5)]}))))
+
+(deftest sublists-test
+  (is (= [[1 2 3] [2 3] [3]]
+         (l/sublists [1 2 3]))))
+
+(deftest get-moveable-cards-test
+  ;; returns a single card
+  (is (= [(l/card :heart :3)]
+         (l/get-moveable-cards {:tableau1 [(l/card :heart :3)]
+                                :tableau2 [(l/card :spade :4)]}
+                               :tableau1
+                               :tableau2)))
+
+  ;; ignores cards that are not :facing-up
+  (is (= nil
+         (l/get-moveable-cards {:tableau1 [(l/card :spade :4 :facing-up false)
+                                           (l/card :heart :3)]
+                                :tableau2 [(l/card :club :5)]}
+                               :tableau1
+                               :tableau2)))
+
+  ;; returns many cards even when the topmost source-card doesn't
+  ;; go on top of target-card
+  (is (= [(l/card :spade :4)
+          (l/card :heart :3)]
+         (l/get-moveable-cards {:tableau1 [(l/card :heart :8)
+                                           (l/card :spade :4)
+                                           (l/card :heart :3)]
+                                :tableau2 [(l/card :heart :5)]}
+                               :tableau1
+                               :tableau2))))
