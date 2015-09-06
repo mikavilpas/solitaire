@@ -209,7 +209,7 @@
 
         true
         (do (let [topmost-card (-> (get game-state card-place-name)
-                                   first)]
+                                   last)]
 
               ;; should turn card only when it's on the top of the pile
               (if (card-ids-equal (:id topmost-card) card-to-turn)
