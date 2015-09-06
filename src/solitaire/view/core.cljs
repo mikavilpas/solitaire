@@ -9,7 +9,9 @@
 (defonce app-state (atom (l/new-game-state)))
 
 (defn selectable [card-place-name]
-  {:on-click #(a/select-or-move! app-state card-place-name)
+  {:on-click #(do (a/select-or-move! app-state card-place-name)
+                  ;; stop bubbling so the place isn't deselected immediately
+                  false)
    :class (when (= (:selected-place @app-state)
                    card-place-name)
             "selected")})
@@ -54,6 +56,7 @@
   [:div
    [:h1 "Klondike solitaire"]
    [:div.board.container-fluid
+    {:on-click #(a/deselect! app-state)}
     [:div.row
      ;; top row
      [:div.col-xs-4

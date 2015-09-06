@@ -23,3 +23,6 @@
 
 (defn reset-stock! [app-state]
   (swap! app-state l/reset-stock))
+
+(defn deselect! [app-state]
+  (swap! app-state assoc :selected-place nil))
