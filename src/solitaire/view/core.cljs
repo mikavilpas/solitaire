@@ -8,10 +8,10 @@
 
 (defonce app-state (atom (l/new-game-state)))
 
-(defn selectable [card-place-name]
+(defn selectable [card-place-name & {:keys [bottommost?]
+                                     :or [bottommost? false]}]
   {:on-click #(do (a/select-or-move! app-state card-place-name)
-                  ;; stop bubbling so the place isn't deselected immediately
-                  (.preventDefault %))
+                  (.stopPropagation %))
    :class (when (= (:selected-place @app-state)
                    card-place-name)
             "selected")})
@@ -39,7 +39,8 @@
    (let [cards (get @app-state card-place-name)]
      (if (empty? cards)
        [:div.card-place.card-size
-        (merge (selectable card-place-name)
+        (merge (selectable card-place-name
+                           :bottommost? true)
                (when (= :stock card-place-name)
                  {:on-click #(a/reset-stock! app-state)}))]
        [:div.card-place

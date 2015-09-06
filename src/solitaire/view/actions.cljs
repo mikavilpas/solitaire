@@ -8,18 +8,18 @@
   (let [target-card (last (get @app-state target-card-place))
         previous-selected-place (:selected-place @app-state)]
     (cond
+      previous-selected-place
+      (swap! app-state
+             l/move-card-place-cards-to
+             previous-selected-place
+             target-card-place)
+
       (not (:facing-up target-card))
       (turn-card! app-state target-card target-card-place)
 
       (or (= :stock target-card-place)
           (empty? (get @app-state target-card-place)))
       (swap! app-state assoc-in [:selected-place] nil)
-
-      previous-selected-place
-      (swap! app-state
-             l/move-card-place-cards-to
-             previous-selected-place
-             target-card-place)
 
       ;; valid card place?
       ((set l/card-places) target-card-place)
