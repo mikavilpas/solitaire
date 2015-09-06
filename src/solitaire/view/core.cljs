@@ -11,7 +11,7 @@
 (defn selectable [card-place-name]
   {:on-click #(do (a/select-or-move! app-state card-place-name)
                   ;; stop bubbling so the place isn't deselected immediately
-                  false)
+                  (.preventDefault %))
    :class (when (= (:selected-place @app-state)
                    card-place-name)
             "selected")})
