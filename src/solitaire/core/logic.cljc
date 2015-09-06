@@ -177,6 +177,7 @@
                                             target-card)
                 cards))
             (sublists source-cards))
+
       (#{:foundation1 :foundation2
          :foundation3 :foundation4} target-card-place)
       (some (fn [cards]
@@ -193,7 +194,7 @@
                                              source-card-place
                                              target-card-place)]
     (move-cards-on-place game-state
-                         (get game-state source-card-place)
+                         cards-to-move
                          target-card-place)
     game-state))
 
