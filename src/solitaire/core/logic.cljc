@@ -10,7 +10,7 @@
                 (name rank))]
     {:rank rank, :suite suite, :id id, :facing-up facing-up}))
 
-(def ranks-ascending [:A :1 :2 :3 :4 :5 :6 :7 :8 :9 :10 :J :Q :K])
+(def ranks-ascending [:A :2 :3 :4 :5 :6 :7 :8 :9 :10 :J :Q :K])
 
 (defn same-suite [a b] (= (:suite a) (:suite b)))
 

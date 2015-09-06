@@ -16,7 +16,7 @@
                          (l/card :spade :4)))))
 
 (deftest rank-as-number-test
-  (is (= (range 1 15)
+  (is (= (range 1 14)
          (mapv l/rank-as-number
                (for [i l/ranks-ascending]
                  (l/card :heart i))))))
@@ -73,7 +73,10 @@
 
   ;; but any other card cannot
   (is (not (l/can-be-put-on-foundation? (l/card :heart :J)
-                                        nil))))
+                                        nil)))
+
+  (is (l/can-be-put-on-foundation? (l/card :club :2)
+                                   (l/card :club :A))))
 
 (deftest remove-card-test
   (is (= {:tableau1 (),:foundation2 (),:tableau6 (),:waste-heap (),
