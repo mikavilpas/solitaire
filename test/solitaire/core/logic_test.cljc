@@ -108,11 +108,11 @@
              :tableau1 first)))
 
   ;; should not turn card if some other card is on top of it
-  (is (= [{:rank :3, :suite :heart, :id "♥3", :facing-up true}
+  (is (= [{:rank :3, :suite :heart, :id "♥3", :facing-up false}
           {:rank :K, :suite :spade, :id "♠K", :facing-up false}]
-         (-> (l/turn-card {:tableau1 [(l/card :heart :3)
+         (-> (l/turn-card {:tableau1 [(l/card :heart :3 :facing-up false)
                                       (l/card :spade :K :facing-up false)]}
-                          (l/card :spade :K)
+                          (l/card :heart :3)
                           :tableau1)
              :tableau1)))
 
