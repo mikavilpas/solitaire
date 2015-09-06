@@ -160,7 +160,7 @@
   ;; fanned card-places only allow moving the very last card in one go
   (if (or (foundations source-card-place)
           (= :waste-heap source-card-place))
-    (last (get game-state source-card-place))
+    (list (last (get game-state source-card-place)))
     (filter :facing-up (get game-state source-card-place))))
 
 (defn get-moveable-cards [game-state
@@ -180,11 +180,10 @@
 
       (#{:foundation1 :foundation2
          :foundation3 :foundation4} target-card-place)
-      (some (fn [cards]
-              (when (can-be-put-on-foundation? (first cards)
-                                               target-card)
-                cards))
-            (sublists source-cards)))))
+      ;; only one card can be moved in one go
+      (let [source-card (last source-cards)]
+        (when (can-be-put-on-foundation? source-card target-card)
+          [source-card])))))
 
 (defn move-card-place-cards-to [game-state
                                 source-card-place

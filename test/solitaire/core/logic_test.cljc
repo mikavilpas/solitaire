@@ -196,3 +196,16 @@
                               :tableau1 [(l/card :heart :5)]}
                              :waste-heap
                              :tableau1))))
+
+(deftest move-card-place-cards-to-test
+  ;; only the topmost card can be moved to foundations at once
+  (is (= [(l/card :club :A)]
+         (-> (l/move-card-place-cards-to
+              {:waste-heap [(l/card :diamond :3)
+                            (l/card :spade :7)
+                            (l/card :spade :4)
+                            (l/card :club :A)]
+               :foundation1 []}
+              :waste-heap
+              :foundation1)
+             :foundation1))))
