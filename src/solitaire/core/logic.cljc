@@ -152,12 +152,23 @@
   (take (count elements)
         (iterate next elements)))
 
+(def foundations (set [:foundation1 :foundation2
+                       :foundation3 :foundation4]))
+
+(defn get-moveable-source-cards [game-state
+                                 source-card-place]
+  ;; fanned card-places only allow moving the very last card in one go
+  (if (or (foundations source-card-place)
+          (= :waste-heap source-card-place))
+    (last (get game-state source-card-place))
+    (filter :facing-up (get game-state source-card-place))))
+
 (defn get-moveable-cards [game-state
                           source-card-place
                           target-card-place]
-  (let [source-cards (filter :facing-up (get game-state source-card-place))
+  (let [source-cards (get-moveable-source-cards game-state
+                                                source-card-place)
         target-card (last (get game-state target-card-place))]
-    ;; todo only allow moving a single card from :stock
     (cond
       (#{:tableau1 :tableau2 :tableau3
          :tableau4 :tableau5 :tableau6} target-card-place)

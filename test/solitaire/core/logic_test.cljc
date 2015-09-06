@@ -187,4 +187,12 @@
                                            (l/card :heart :3)]
                                 :tableau2 [(l/card :heart :5)]}
                                :tableau1
-                               :tableau2))))
+                               :tableau2)))
+
+  ;; it's only possible to move the last card from fanned places
+  (is (empty?
+       (l/get-moveable-cards {:waste-heap [(l/card :spade :4)
+                                           (l/card :heart :3)]
+                              :tableau1 [(l/card :heart :5)]}
+                             :waste-heap
+                             :tableau1))))
