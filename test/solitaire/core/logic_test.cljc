@@ -54,6 +54,27 @@
   (is (l/can-be-put-on-tableau? (l/card :spade :10)
                                 (l/card :heart :J))))
 
+(deftest can-be-put-on-foundation?-test
+  ;; different suite -> no
+  (is (not (l/can-be-put-on-foundation? (l/card :heart :3)
+                                        (l/card :spade :4))))
+
+  ;; same suite but new card not exactly 1 larger in rank
+  (is (not (l/can-be-put-on-foundation? (l/card :heart :6)
+                                        (l/card :heart :4))))
+
+  ;; same suite and rank ascending by 1
+  (is (l/can-be-put-on-foundation? (l/card :heart :5)
+                                   (l/card :heart :4)))
+
+  ;; an ace can be put on nothing
+  (is (l/can-be-put-on-foundation? (l/card :heart :A)
+                                   nil))
+
+  ;; but any other card cannot
+  (is (not (l/can-be-put-on-foundation? (l/card :heart :J)
+                                        nil))))
+
 (deftest remove-card-test
   (is (= {:tableau1 (),:foundation2 (),:tableau6 (),:waste-heap (),
           :tableau2 (),:foundation3 (),:tableau5 (),:tableau3 (),

@@ -82,6 +82,17 @@
                              (dec (rank-as-number card-under)))]
       (and different-suite rank-descending))))
 
+(defn can-be-put-on-foundation?
+  "like can-be-put-on-tableau? but for foundations"
+  [new-card card-under]
+  (if (and (= :A (:rank new-card))
+           (not card-under))
+    true
+    (let [same-suite (same-suite new-card card-under)
+          rank-ascending (= (dec (rank-as-number new-card))
+                            (rank-as-number card-under))]
+      (and same-suite rank-ascending))))
+
 (defn- card-ids-equal [card-id card]
   (= card-id (:id card)))
 
@@ -153,6 +164,13 @@
       (some (fn [cards]
               (when (can-be-put-on-tableau? (first cards)
                                             target-card)
+                cards))
+            (sublists source-cards))
+      (#{:foundation1 :foundation2
+         :foundation3 :foundation4} target-card-place)
+      (some (fn [cards]
+              (when (can-be-put-on-foundation? (first cards)
+                                               target-card)
                 cards))
             (sublists source-cards)))))
 
