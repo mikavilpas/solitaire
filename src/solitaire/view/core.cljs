@@ -81,8 +81,13 @@
      [:div.col-xs-2 (card-place app-state :tableau6 :fanned? true)]]
     ;; spacing
     [:div.row.card-size]]
-   [:div.container [:h3
-                    [:a {:href "test.html"} "Tests!"]]]])
+   [:div.container
+    [:div.row [:div.col-xs-2
+               [:button.btn.btn-lg {:type "button"
+                                    :on-click #(a/new-game! app-state)}
+                "New game"]]]
+    [:div.row [:div.pull-left
+               [:h3 [:a {:href "test.html"} "Tests"]]]]]])
 
 (fw/start {:build-id "dev"
            ;;:on-jsload #(print "loaded")

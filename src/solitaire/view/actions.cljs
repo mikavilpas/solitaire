@@ -30,3 +30,6 @@
 
 (defn deselect! [app-state]
   (swap! app-state assoc :selected-place nil))
+
+(defn new-game! [app-state]
+  (reset! app-state (l/new-game-state)))
