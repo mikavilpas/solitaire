@@ -80,10 +80,14 @@
     ;; spacing
     [:div.row.card-size]]
    [:div.container
-    [:div.row [:div.col-xs-2
-               [:button.btn.btn-lg {:type "button"
-                                    :on-click #(a/new-game! app-state)}
-                "New game"]]]
+    [:div.row
+     [:div.col-xs-2
+      [:button.btn.btn-lg {:type "button"
+                           :on-click #(a/new-game! app-state)}
+       "New game"]]
+     [:div.col-xs-2 [:button.btn.btn-lg {:type "button"
+                                         :on-click #(a/undo! app-state)}
+                     "Undo"]]]
     [:div.row [:div.pull-left
                [:h3 [:a {:href "test.html"} "Tests"]]]]]])
 
