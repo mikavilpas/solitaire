@@ -8,7 +8,7 @@
 (defn swap-with-history! [app-state & args]
   (let [old-state @app-state]
     (apply swap! app-state args)
-    (swap! state-history #(take history-size (conj % @app-state)))))
+    (swap! state-history #(take history-size (conj % old-state)))))
 
 (defn turn-card! [app-state card card-place-name]
   (swap-with-history! app-state l/turn-card card card-place-name))
