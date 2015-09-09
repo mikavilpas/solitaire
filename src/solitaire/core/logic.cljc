@@ -240,5 +240,6 @@
                 (if-not (empty? foo)
                   (conj result target-card-place)
                   result)))
-            []
+            #{}
             other-places)))
+
