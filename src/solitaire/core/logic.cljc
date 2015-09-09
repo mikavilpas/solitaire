@@ -72,11 +72,10 @@
 (defn can-be-put-on-tableau?
   "new-card is the card that will be placed on top, card-under is the
   card under it, or nil if there is no card under"
-  [new-card card-under]
-  (if (and (= :K (:rank new-card))
-           (not card-under))
+  [new-card card-under]  
+  (if (not card-under)
     ;; a king can be put on the tableau by itself
-    true
+    (= :K (:rank new-card))
     (let [different-suite (not (same-suite new-card card-under))
           rank-descending (= (rank-as-number new-card)
                              (dec (rank-as-number card-under)))]
@@ -85,9 +84,8 @@
 (defn can-be-put-on-foundation?
   "like can-be-put-on-tableau? but for foundations"
   [new-card card-under]
-  (if (and (= :A (:rank new-card))
-           (not card-under))
-    true
+  (if (not card-under)
+    (= :A (:rank new-card))
     (let [same-suite (same-suite new-card card-under)
           rank-ascending (= (dec (rank-as-number new-card))
                             (rank-as-number card-under))]
