@@ -134,7 +134,7 @@
   (is (= {:tableau1 (),
           :foundation2 (),
           :tableau6 (),
-          :waste-heap [{:rank :3, :suite :heart, :id "♥3", :facing-up true}],
+          :waste-heap [(l/card :heart :3)],
           :tableau2 (),
           :selected-place nil,
           :foundation3 (),
@@ -142,11 +142,11 @@
           :tableau3 (),
           :foundation1 (),
           :tableau4 (),
-          :stock (),
+          :stock [(l/card :heart :4 :facing-up false)],
           :foundation4 ()}
 
-         (l/turn-card {:stock [{:rank :3, :suite :heart,
-                                :id "♥3", :facing-up false}]}
+         (l/turn-card {:stock [(l/card :heart :4 :facing-up false)
+                               (l/card :heart :3 :facing-up false)]}
                       (l/card :heart :3 :facing-up false)
                       :stock))))
 

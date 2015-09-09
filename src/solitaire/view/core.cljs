@@ -9,11 +9,16 @@
 (defonce app-state (atom (l/new-game-state)))
 
 (defn selectable [card-place-name]
-  {:on-click #(do (a/select-or-move! app-state card-place-name)
-                  (.stopPropagation %))
-   :class (when (= (:selected-place @app-state)
-                   card-place-name)
-            "selected")})
+  ;; stock can never be selected
+  (let [properties
+        { :class (when (= (:selected-place @app-state)
+                          card-place-name)
+                   "selected")}]
+    (if-not (= :stock card-place-name)
+      (merge properties {:on-click
+                         #(do (a/select-or-move! app-state card-place-name)
+                              (.stopPropagation %))})
+      properties)))
 
 (defn card
   [card-map card-place-name]
