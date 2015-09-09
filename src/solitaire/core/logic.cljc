@@ -229,3 +229,18 @@
                             (-> cards
                                 turn-face-down
                                 reverse)))))
+
+(defn get-hints
+  "Returns places where the current card can be moved"
+  [game-state source-card-place]
+  (let [source-card (last (get game-state source-card-place))
+        other-places (filter #(not (= :stock %)) card-places)]
+    (reduce (fn [result target-card-place]
+              (let [foo (get-moveable-cards game-state
+                                            source-card-place
+                                            target-card-place)]
+                (if-not (empty? foo)
+                  (conj result target-card-place)
+                  result)))
+            []
+            other-places)))

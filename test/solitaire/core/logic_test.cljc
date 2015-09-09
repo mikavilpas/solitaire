@@ -223,3 +223,10 @@
               :waste-heap
               :foundation1)
              :foundation1))))
+
+(deftest get-hints-test
+  (is (= [:tableau1 :foundation1]
+         (l/get-hints {:waste-heap [(l/card :heart :3)]
+                       :foundation1 [(l/card :heart :2)]
+                       :tableau1 [(l/card :spade :4)]}
+                      :waste-heap))))
