@@ -207,18 +207,18 @@
                (assoc-in card [:facing-up] true))))
 
         true
-        (do (let [topmost-card (-> (get game-state card-place-name)
-                                   last)]
+        (let [topmost-card (-> (get game-state card-place-name)
+                               last)]
 
-              ;; should turn card only when it's on the top of the pile
-              (if (card-ids-equal (:id topmost-card) card-to-turn)
-                (update-card
-                 game-state
-                 (:id card-to-turn)
-                 (fn [card card-place]
-                   (assoc-in card [:facing-up] true)))
+          ;; should turn card only when it's on the top of the pile
+          (if (card-ids-equal (:id topmost-card) card-to-turn)
+            (update-card
+             game-state
+             (:id card-to-turn)
+             (fn [card card-place]
+               (assoc-in card [:facing-up] true)))
 
-                game-state)))))
+            game-state))))
 
 (defn reset-stock
   "Moves the cards from waste-heap to the stock"
