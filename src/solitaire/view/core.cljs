@@ -1,14 +1,16 @@
 (ns ^:figwheel-always solitaire.view.core
     (:require [reagent.core :as reagent :refer [atom]]
+              [figwheel.client :as fw]
               [solitaire.core.logic :as l]
+              [cljs.core.async :refer [put!]]
               [solitaire.view.actions :as a :refer [app-state]]))
 
 (defn selectable [card-place-name]
   ;; stock can never be selected
   (let [properties
-        { :class (when (= (:selected-place @app-state)
-                          card-place-name)
-                   "selected")}]
+        {:class (when (= (:selected-place @app-state)
+                         card-place-name)
+                  "selected")}]
     (if-not (= :stock card-place-name)
       (merge properties {:on-click
                          #(do (a/select-or-move! app-state card-place-name)
@@ -89,10 +91,13 @@
                                          :on-click #(a/undo! app-state)}
                      "Undo"]]
      [:div.col-xs-2 [:button.btn.btn-lg {:type "button"
-                                         :on-click #(a/show-hint! app-state)}
+                                         :on-click #(put! a/game-chan [:show-hint nil])}
                      "Hint"]]]
     [:div.row [:div.pull-left
                [:h3 [:a {:href "test.html"} "Tests"]]]]]])
+
+(fw/start {:build-id "dev"
+           :on-jsload #(a/restart-system)})
 
 (reagent/render-component [board]
                           (js/document.getElementById "app"))

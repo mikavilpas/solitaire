@@ -1,7 +1,6 @@
 (ns solitaire.view.actions
   (:require [solitaire.core.logic :as l]
-            [cljs.core.async :refer [chan put! timeout <! close! alts!]]
-            [figwheel.client :as fw])
+            [cljs.core.async :refer [chan put! timeout <! close! alts!]])
   (:require-macros [cljs.core.async.macros :refer [go go-loop]]))
 
 (enable-console-print!)
@@ -12,8 +11,7 @@
 
 ;; The newest value is at the front of the list
 (defonce state-history (atom (list)))
-
-(def channels {})
+(defonce game-chan (chan))
 
 (defn swap-with-history! [app-state & args]
   (let [old-state @app-state]
@@ -27,6 +25,7 @@
   (swap! app-state assoc :selected-place nil))
 
 (defn select-or-move! [app-state target-card-place]
+  (print "select-or-move! " target-card-place)
   (let [target-card (last (get @app-state target-card-place))
         previous-selected-place (:selected-place @app-state)]
     (cond
@@ -61,20 +60,27 @@
     (swap! state-history #(drop 1 %))))
 
 (defn show-hint! [app-state]
-  (let [hints (l/get-hints app-state
+  (let [hints (l/get-hints @app-state
                            (:selected-place @app-state))]
     ;; TODO show hints using core.async
-    ))
+    (print "show-hint!: " hints)))
 
 (defn init-game-loop
-  "Returns a function that stops the loop"
+  "Inits the loop in the background and returns a function that stops it"
   []
   (let [stopping-channel (chan)]
     (go-loop []
-      (let [[value channel] (alts! [(timeout 1000) stopping-channel])]
+      (let [[value channel] (alts! [game-chan stopping-channel])]
         (if (= channel stopping-channel)
+          ;; this is called when figwheel reloads the code
           "stopping"
-          (recur))))
+
+          (let [[event-name data] value]
+            (condp = event-name
+              :show-hint (show-hint! app-state)
+              (print "Warning: unknown event " event-name))
+            (recur)))))
+
     (fn stop! [] (put! stopping-channel :stop-game-loop))))
 
 ;; development time convenience follows, this could be moved to another file
@@ -87,13 +93,10 @@
 
 (defn stop-system []
   (if-let [stop-system! @system]
-    (do
-      (stop-system!))
+    (stop-system!)
+    ;; this is weird behaviour, warn about it
     (print "cannot stop system as it's not started")))
 
 (defn restart-system []
   (stop-system)
   (start-system))
-
-(fw/start {:build-id "dev"
-           :on-jsload #(restart-system)})
