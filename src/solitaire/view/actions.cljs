@@ -1,14 +1,24 @@
 (ns solitaire.view.actions
-  (:require [solitaire.core.logic :as l]))
+  (:require [solitaire.core.logic :as l]
+            [cljs.core.async :refer [chan put! timeout <! close! alts!]]
+            [figwheel.client :as fw])
+  (:require-macros [cljs.core.async.macros :refer [go go-loop]]))
+
+(enable-console-print!)
+
+;; this is the state that the game logic handles and "modifies" by
+;; returning a new state
+(defonce app-state (atom (l/new-game-state)))
 
 ;; The newest value is at the front of the list
 (defonce state-history (atom (list)))
-(defonce history-size 10)
+
+(def channels {})
 
 (defn swap-with-history! [app-state & args]
   (let [old-state @app-state]
     (apply swap! app-state args)
-    (swap! state-history #(take history-size (conj % old-state)))))
+    (swap! state-history #(take 10 (conj % old-state)))))
 
 (defn turn-card! [app-state card card-place-name]
   (swap-with-history! app-state l/turn-card card card-place-name))
@@ -49,3 +59,44 @@
   (when (not-empty @state-history)
     (reset! app-state (first @state-history))
     (swap! state-history #(drop 1 %))))
+
+(defn show-hint! [app-state]
+  (let [hints (l/get-hints app-state
+                           (:selected-place @app-state))]
+    ;; TODO show hints using core.async
+    ))
+
+(defn init-game-loop
+  "Returns a function that stops the loop"
+  []
+  (let [stopping-channel (chan)]
+    (go-loop []
+      (let [[value channel] (alts! [(timeout 1000) stopping-channel])]
+        (if (= channel stopping-channel)
+          "stopping"
+          (recur))))
+    (fn stop! [] (put! stopping-channel :stop-game-loop))))
+
+;; development time convenience follows, this could be moved to another file
+
+;; contains a shutdown function of no arguments
+(defonce system (atom identity))
+
+(defn start-system []
+  (reset! system (init-game-loop)))
+
+(defn stop-system []
+  (if-let [stop-system! @system]
+    (do
+      (stop-system!))
+    (print "cannot stop system as it's not started")))
+
+(defn restart-system []
+  (stop-system)
+  (start-system))
+
+(restart-system)
+
+(fw/start {:build-id "dev"
+           ;; :on-jsload #(restart-system)
+           })

@@ -1,12 +1,7 @@
 (ns ^:figwheel-always solitaire.view.core
     (:require [reagent.core :as reagent :refer [atom]]
-              [figwheel.client :as fw]
               [solitaire.core.logic :as l]
-              [solitaire.view.actions :as a]))
-
-(enable-console-print!)
-
-(defonce app-state (atom (l/new-game-state)))
+              [solitaire.view.actions :as a :refer [app-state]]))
 
 (defn selectable [card-place-name]
   ;; stock can never be selected
@@ -92,14 +87,12 @@
        "New game"]]
      [:div.col-xs-2 [:button.btn.btn-lg {:type "button"
                                          :on-click #(a/undo! app-state)}
-                     "Undo"]]]
+                     "Undo"]]
+     [:div.col-xs-2 [:button.btn.btn-lg {:type "button"
+                                         :on-click #(a/show-hint! app-state)}
+                     "Hint"]]]
     [:div.row [:div.pull-left
                [:h3 [:a {:href "test.html"} "Tests"]]]]]])
 
-(fw/start {:build-id "dev"
-           ;;:on-jsload #(print "loaded")
-           })
-
 (reagent/render-component [board]
                           (js/document.getElementById "app"))
-
