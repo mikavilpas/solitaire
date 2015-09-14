@@ -69,10 +69,19 @@ div.board {
 }
 
 .selected {
-    content:" ";
-    top:0;
-    left:0;
+    content: " ";
+    top: 0;
+    left: 0;
     width: 10vw;
     height: 100%;
     background-color: rgba(0, 0, 255, 0.1);
+}
+
+.hinted {
+    content: " ";
+    top: 0;
+    left: 0;
+    width: 10vw;
+    height: 100%;
+    background-color: rgba(255, 162, 0, 0.4);
 }

@@ -1,13 +1,10 @@
 (ns solitaire.view.actions
   (:require [solitaire.core.logic :as l]
+            [clojure.set :as set]
             [cljs.core.async :refer [chan put! timeout <! close! alts!]])
   (:require-macros [cljs.core.async.macros :refer [go go-loop]]))
 
 (enable-console-print!)
-
-;; this is the state that the game logic handles and "modifies" by
-;; returning a new state
-(defonce app-state (atom (l/new-game-state)))
 
 ;; The newest value is at the front of the list
 (defonce state-history (atom (list)))
@@ -25,7 +22,6 @@
   (swap! app-state assoc :selected-place nil))
 
 (defn select-or-move! [app-state target-card-place]
-  (print "select-or-move! " target-card-place)
   (let [target-card (last (get @app-state target-card-place))
         previous-selected-place (:selected-place @app-state)]
     (cond
@@ -59,15 +55,16 @@
     (reset! app-state (first @state-history))
     (swap! state-history #(drop 1 %))))
 
-(defn show-hint! [app-state]
-  (let [hints (l/get-hints @app-state
-                           (:selected-place @app-state))]
-    ;; TODO show hints using core.async
-    (print "show-hint!: " hints)))
+(defn show-hint! [[app-state ui-state]]
+  (let [hinted-places (l/get-hints @app-state
+                                   (:selected-place @app-state))]
+    (go (swap! ui-state assoc :hinted-card-places hinted-places)
+        (<! (timeout 2000))
+        (swap! ui-state assoc :hinted-card-places #{}))))
 
 (defn init-game-loop
   "Inits the loop in the background and returns a function that stops it"
-  []
+  [app-state-atom]
   (let [stopping-channel (chan)]
     (go-loop []
       (let [[value channel] (alts! [game-chan stopping-channel])]
@@ -75,28 +72,11 @@
           ;; this is called when figwheel reloads the code
           "stopping"
 
-          (let [[event-name data] value]
+          (let [[event-name & arguments] value]
             (condp = event-name
-              :show-hint (show-hint! app-state)
+              :show-hint (show-hint! arguments)
               (print "Warning: unknown event " event-name))
             (recur)))))
 
     (fn stop! [] (put! stopping-channel :stop-game-loop))))
 
-;; development time convenience follows, this could be moved to another file
-
-;; contains a shutdown function of no arguments
-(defonce system (atom (init-game-loop)))
-
-(defn start-system []
-  (reset! system (init-game-loop)))
-
-(defn stop-system []
-  (if-let [stop-system! @system]
-    (stop-system!)
-    ;; this is weird behaviour, warn about it
-    (print "cannot stop system as it's not started")))
-
-(defn restart-system []
-  (stop-system)
-  (start-system))
