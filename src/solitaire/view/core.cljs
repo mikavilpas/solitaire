@@ -3,7 +3,7 @@
               [figwheel.client :as fw]
               [solitaire.core.logic :as l]
               [cljs.core.async :refer [put!]]
-              [solitaire.view.actions :as a]))
+              [solitaire.view.actions :refer [game-chan init-game-loop]]))
 
 ;; this is the state that the game logic handles and "modifies" by
 ;; returning a new state
@@ -11,6 +11,12 @@
 
 ;; ui specific state for graphical effects and such
 (def ui-state (atom {:hinted-card-places #{}}))
+
+(defn game-event [event-name & arguments]
+  (put! game-chan (into [event-name] arguments))
+  ;; stop the browser from complaining about calling stopPropagation
+  ;; instead of returning false
+  nil)
 
 (defn selectable [card-place-name]
   ;; stock can never be selected
@@ -21,16 +27,21 @@
                          (:selected-place @app-state))
                       "selected")}]
     (if-not (= :stock card-place-name)
-      (merge properties {:on-click
-                         #(do (a/select-or-move! app-state card-place-name)
-                              (.stopPropagation %))})
+      (merge {:on-click #(do (game-event :select-or-move
+                                         app-state
+                                         card-place-name)
+                             ;; don't let the click event bubble to
+                             ;; the board. this would cause the card
+                             ;; to be deselected immediately.
+                             (.stopPropagation %))}
+             properties)
       properties)))
 
 (defn card
   [card-map card-place-name]
   (if-not (:facing-up card-map)
     [:div.card-size.facing-down
-     {:on-click #(a/turn-card! app-state card-map card-place-name)}]
+     {:on-click #(game-event :turn-card app-state card-map card-place-name)}]
 
     [:div.card-size.card-face {:key (:id card-map)}
      [:div.selected-overlay
@@ -47,8 +58,9 @@
   (let [cards (get @app-state card-place-name)]
     (if (empty? cards)
       [:div.selected-overlay (selectable card-place-name)
-       [:div.card-place.card-size (when (= :stock card-place-name)
-                                    {:on-click #(a/reset-stock! app-state)})]]
+       [:div.card-place.card-size
+        (when (= :stock card-place-name)
+          {:on-click #(game-event :reset-stock app-state)})]]
       [:div.card-place
        [:div.selected-overlay (selectable card-place-name)
         (if fanned?
@@ -65,7 +77,7 @@
   [:div
    [:h1 "Klondike solitaire"]
    [:div.board.container-fluid
-    {:on-click #(a/deselect! app-state)}
+    {:on-click #(game-event :deselect app-state)}
     [:div.row
      ;; top row
      [:div.col-xs-4
@@ -93,13 +105,13 @@
     [:div.row
      [:div.col-xs-2
       [:button.btn.btn-lg {:type "button"
-                           :on-click #(a/new-game! app-state)}
+                           :on-click #(game-event :new-game app-state)}
        "New game"]]
      [:div.col-xs-2 [:button.btn.btn-lg {:type "button"
-                                         :on-click #(a/undo! app-state)}
+                                         :on-click #(game-event :undo app-state)}
                      "Undo"]]
      [:div.col-xs-2 [:button.btn.btn-lg {:type "button"
-                                         :on-click #(put! a/game-chan [:show-hint app-state ui-state])}
+                                         :on-click #(game-event :show-hint app-state ui-state)}
                      "Hint"]]]
     [:div.row [:div.pull-left
                [:h3 [:a {:href "test.html"} "Tests"]]]]]])
@@ -117,10 +129,10 @@
 ;; development time convenience follows, this could be moved to another file
 
 ;; contains a shutdown function of no arguments
-(defonce system (atom (a/init-game-loop app-state)))
+(defonce system (atom (init-game-loop app-state)))
 
 (defn start-system [app-state]
-  (reset! system (a/init-game-loop app-state)))
+  (reset! system (init-game-loop app-state)))
 
 (defn stop-system []
   (if-let [stop-system! @system]

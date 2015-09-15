@@ -55,7 +55,7 @@
     (reset! app-state (first @state-history))
     (swap! state-history #(drop 1 %))))
 
-(defn show-hint! [[app-state ui-state]]
+(defn show-hint! [app-state ui-state]
   (let [hinted-places (l/get-hints @app-state
                                    (:selected-place @app-state))]
     (go (swap! ui-state assoc :hinted-card-places hinted-places)
@@ -74,7 +74,13 @@
 
           (let [[event-name & arguments] value]
             (condp = event-name
-              :show-hint (show-hint! arguments)
+              :show-hint (apply show-hint! arguments)
+              :reset-stock (apply reset-stock! arguments)
+              :turn-card (apply turn-card! arguments)
+              :deselect (apply deselect! arguments)
+              :new-game (apply new-game! arguments)
+              :select-or-move (apply select-or-move! arguments)
+              :undo (apply undo! arguments)
               (print "Warning: unknown event " event-name))
             (recur)))))
 
