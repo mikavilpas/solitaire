@@ -72,16 +72,21 @@
           ;; this is called when figwheel reloads the code
           "stopping"
 
-          (let [[event-name & arguments] value]
-            (condp = event-name
-              :show-hint (apply show-hint! arguments)
-              :reset-stock (apply reset-stock! arguments)
-              :turn-card (apply turn-card! arguments)
-              :deselect (apply deselect! arguments)
-              :new-game (apply new-game! arguments)
-              :select-or-move (apply select-or-move! arguments)
-              :undo (apply undo! arguments)
-              (print "Warning: unknown event " event-name))
+          (let [[event-name & arguments] value
+                handlers {:show-hint show-hint!
+                          :reset-stock reset-stock!
+                          :turn-card turn-card!
+                          :deselect deselect!
+                          :new-game new-game!
+                          :select-or-move :select-or-move
+                          :undo undo!}
+                handler (get handlers event-name
+                             #(print "Warning: unknown event " event-name))]
+            (try
+              (apply handler arguments)
+              (catch js/Error e
+                (print "Exception: " (.-message e))
+                (print (.-stack e))))
             (recur)))))
 
     (fn stop! [] (put! stopping-channel :stop-game-loop))))
