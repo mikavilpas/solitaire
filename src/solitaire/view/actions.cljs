@@ -78,7 +78,7 @@
                           :turn-card turn-card!
                           :deselect deselect!
                           :new-game new-game!
-                          :select-or-move :select-or-move
+                          :select-or-move select-or-move!
                           :undo undo!}
                 handler (get handlers event-name
                              #(print "Warning: unknown event " event-name))]
