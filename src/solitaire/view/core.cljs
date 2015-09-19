@@ -92,13 +92,14 @@
     [:div.row.half-card-size]
 
     ;; bottom row
-    [:div.row.card-size
-     [:div.col-xs-2 [card-place :tableau1 :fanned? true]]
-     [:div.col-xs-2 [card-place :tableau2 :fanned? true]]
-     [:div.col-xs-2 [card-place :tableau3 :fanned? true]]
-     [:div.col-xs-2 [card-place :tableau4 :fanned? true]]
-     [:div.col-xs-2 [card-place :tableau5 :fanned? true]]
-     [:div.col-xs-2 [card-place :tableau6 :fanned? true]]]
+    [:div.row.card-size.seven-cols
+     [:div.col-md-1 [card-place :tableau1 :fanned? true]]
+     [:div.col-md-1 [card-place :tableau2 :fanned? true]]
+     [:div.col-md-1 [card-place :tableau3 :fanned? true]]
+     [:div.col-md-1 [card-place :tableau4 :fanned? true]]
+     [:div.col-md-1 [card-place :tableau5 :fanned? true]]
+     [:div.col-md-1 [card-place :tableau6 :fanned? true]]
+     [:div.col-md-1 [card-place :tableau7 :fanned? true]]]
     ;; spacing
     [:div.row.card-size]]
    [:div.container
@@ -115,8 +116,6 @@
                      "Hint"]]]
     [:div.row [:div.pull-left
                [:h3 [:a {:href "test.html"} "Tests"]]]]]])
-
-
 
 
 

@@ -27,7 +27,7 @@
         (for [suite [:spade :club :heart :diamond]
               rank [:2 :3 :4 :5 :6 :7 :8 :9 :10 :J :Q :K :A]]
           (card suite rank))]
-    (shuffle cards)))
+    cards))
 
 (defn turn-face-down [cards]
   (map #(assoc-in % [:facing-up] false) cards))
@@ -40,16 +40,16 @@
 
 (defn new-game-state []
   (let [take-cards (fn [n remaining-deck]
-                     (split-at (rand-int n)
-                               remaining-deck))
-        stock new-deck
+                     (split-at n remaining-deck))
+        stock (shuffle new-deck)
         ;; keep taking cards from the stock. the stock is "mutated" each time
-        [tableau1 stock] (take-cards 6 stock)
-        [tableau2 stock] (take-cards 6 stock)
-        [tableau3 stock] (take-cards 6 stock)
-        [tableau4 stock] (take-cards 6 stock)
-        [tableau5 stock] (take-cards 6 stock)
-        [tableau6 stock] (take-cards 6 stock)]
+        [tableau1 stock] (take-cards 1 stock)
+        [tableau2 stock] (take-cards 2 stock)
+        [tableau3 stock] (take-cards 3 stock)
+        [tableau4 stock] (take-cards 4 stock)
+        [tableau5 stock] (take-cards 5 stock)
+        [tableau6 stock] (take-cards 6 stock)
+        [tableau7 stock] (take-cards 7 stock)]
     { ;; K Q J 10 9 8 7 6 5 4 3 2 A
      :foundation1 []
      :foundation2 []
@@ -62,6 +62,7 @@
      :tableau4 (turn-rest-down tableau4)
      :tableau5 (turn-rest-down tableau5)
      :tableau6 (turn-rest-down tableau6)
+     :tableau7 (turn-rest-down tableau7)
      :waste-heap []
      :stock (turn-face-down stock)
      ;; user selects a place, it gets put here.
@@ -96,6 +97,7 @@
 
 (def card-places [:tableau1 :tableau2 :tableau3
                   :tableau4 :tableau5 :tableau6
+                  :tableau7
                   :foundation1 :foundation2 :foundation3
                   :foundation4 :waste-heap :stock])
 

@@ -21,7 +21,8 @@ div.board {
 }
 
 .card-face {
-    background-color: #EEEEEE;
+    background: radial-gradient(circle, white, #ddd);
+
     border-radius: 5pt;
     font-weight: bold;
     font-size: x-large;
@@ -84,4 +85,15 @@ div.board {
     width: 10vw;
     height: 100%;
     background-color: rgba(255, 162, 0, 0.4);
+}
+
+/* 7 column layout for bootstrap grid
+   https://gist.github.com/kanakiyajay/15e4fc98248956614643
+ */
+
+.seven-cols .col-md-1,
+.seven-cols .col-sm-1,
+.seven-cols .col-lg-1 {
+    width: 14.285714285714285714285714285714%;
+    float: left;
 }

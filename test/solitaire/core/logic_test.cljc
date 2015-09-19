@@ -89,7 +89,8 @@
 (deftest remove-card-test
   (is (= {:tableau1 (),:foundation2 (),:tableau6 (),:waste-heap (),
           :tableau2 (),:foundation3 (),:tableau5 (),:tableau3 (),
-          :foundation1 (),:tableau4 (),:stock (),:foundation4 ()}
+          :foundation1 (),:tableau4 (),:stock (),:foundation4 (),
+          :tableau7 ()}
 
          (l/remove-cards {:tableau1 [(l/card :heart :3)]}
                          ["♥3"]))))
@@ -131,6 +132,7 @@
   (is (= {:tableau1 (),
           :foundation2 (),
           :tableau6 (),
+          :tableau7 (),
           :waste-heap [(l/card :heart :3)],
           :tableau2 (),
           :selected-place nil,
@@ -151,6 +153,7 @@
   (is (= {:tableau1 (),
           :foundation2 (),
           :tableau6 (),
+          :tableau7 (),
           :waste-heap (),
           :tableau2 (),
           :selected-place nil,
@@ -222,7 +225,7 @@
              :foundation1))))
 
 (deftest get-hints-test
-  (is (= [:tableau1 :foundation1]
+  (is (= (set [:tableau1 :foundation1])
          (l/get-hints {:waste-heap [(l/card :heart :3)]
                        :foundation1 [(l/card :heart :2)]
                        :tableau1 [(l/card :spade :4)]}
