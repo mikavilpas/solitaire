@@ -1,6 +1,5 @@
 (ns ^:figwheel-always solitaire.view.core
     (:require [reagent.core :as reagent :refer [atom]]
-              [figwheel.client :as fw]
               [solitaire.core.logic :as l]
               [cljs.core.async :refer [put!]]
               [solitaire.view.actions :refer [game-chan init-game-loop]]))
@@ -117,34 +116,6 @@
     [:div.row [:div.pull-left
                [:h3 [:a {:href "test.html"} "Tests"]]]]]])
 
-
-
-
-
-
-
-
-
-;; development time convenience follows, this could be moved to another file
-
-;; contains a shutdown function of no arguments
-(defonce system (atom (init-game-loop app-state)))
-
-(defn start-system [app-state]
-  (reset! system (init-game-loop app-state)))
-
-(defn stop-system []
-  (if-let [stop-system! @system]
-    (stop-system!)
-    ;; this is weird behaviour, warn about it
-    (print "cannot stop system as it's not started")))
-
-(defn restart-system [app-state]
-  (stop-system)
-  (start-system app-state))
-
-(fw/start {:build-id "dev"
-           :on-jsload #(restart-system app-state)})
 
 (reagent/render-component [board]
                           (js/document.getElementById "app"))

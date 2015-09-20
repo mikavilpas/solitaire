@@ -19,8 +19,8 @@
                                     "target"]
 
   :cljsbuild {:builds [{:id "dev"
-                        :source-paths ["src/"]
-                        :compiler {:main solitaire.view.core
+                        :source-paths ["src" "dev_src"]
+                        :compiler {:main solitaire.dev
                                    :asset-path "js/compiled/out"
                                    :output-to "resources/public/js/compiled/solitaire.js"
                                    :output-dir "resources/public/js/compiled/out"
