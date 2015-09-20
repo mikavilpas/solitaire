@@ -46,6 +46,7 @@ div.board {
     -moz-user-select:none;
     -ms-user-select:none;
     user-select:none;
+    font-size: 1.6vw;
 }
 
 .test-result {
