@@ -117,5 +117,8 @@
                [:h3 [:a {:href "test.html"} "Tests"]]]]]])
 
 
+;; contains a shutdown function of no arguments
+(defonce system (atom (init-game-loop app-state)))
+
 (reagent/render-component [board]
                           (js/document.getElementById "app"))

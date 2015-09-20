@@ -1,18 +1,12 @@
 (ns solitaire.dev
   (:require [figwheel.client :as fw]
-            [solitaire.view.core :refer [app-state]]
+            [solitaire.view.core :refer [app-state system]]
             [solitaire.view.actions :refer [init-game-loop]]))
 
 (enable-console-print!)
 
-;; contains a shutdown function of no arguments
-(defonce system (atom (init-game-loop app-state)))
-
 (defn start-system [app-state]
   (reset! system (init-game-loop app-state)))
-
-(comment
-  (js/document.getElementById "app"))
 
 (defn stop-system []
   (if-let [stop-system! @system]
