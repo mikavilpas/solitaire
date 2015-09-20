@@ -1,5 +1,7 @@
 # solitaire
 
+![game board](readme-pics/game-board.PNG)
+
 This is a clojurescript solitaire game built for my clojure
 presentation at work. At Protacon where I work, I had the chance to
 hold a presentation about a programming related subject for one of our
