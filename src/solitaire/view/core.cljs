@@ -12,8 +12,8 @@
 ;; ui specific state for graphical effects and such
 (def ui-state (atom {:hinted-card-places #{}}))
 
-(defn game-event [event-name & arguments]
-  (put! game-chan (into [event-name] arguments))
+(defn game-event [event-name & args]
+  (put! game-chan (into [event-name] args))
   ;; stop the browser from complaining about calling stopPropagation
   ;; instead of returning false
   nil)

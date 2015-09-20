@@ -72,7 +72,7 @@
           ;; this is called when figwheel reloads the code
           "stopping"
 
-          (let [[event-name & arguments] value
+          (let [[event-name & args] value
                 handlers {:show-hint show-hint!
                           :reset-stock reset-stock!
                           :turn-card turn-card!
@@ -83,7 +83,7 @@
                 handler (get handlers event-name
                              #(print "Warning: unknown event " event-name))]
             (try
-              (apply handler arguments)
+              (apply handler args)
               (catch js/Error e
                 (print "Exception: " (.-message e))
                 (print (.-stack e))))
