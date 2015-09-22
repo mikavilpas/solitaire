@@ -171,7 +171,7 @@
         target-card (last (get game-state target-card-place))]
     (cond
       (#{:tableau1 :tableau2 :tableau3
-         :tableau4 :tableau5 :tableau6} target-card-place)
+         :tableau4 :tableau5 :tableau6 :tableau7} target-card-place)
       (some (fn [cards]
               (when (can-be-put-on-tableau? (first cards)
                                             target-card)
