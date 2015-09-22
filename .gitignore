@@ -11,4 +11,5 @@ pom.xml
 .lein-plugins/
 .repl
 .nrepl-port
-resources/public/js/test/
+resources/public/js/test/out
+resources/public/js/min/out
