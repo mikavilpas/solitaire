@@ -35,7 +35,7 @@
                                    :asset-path "js/test/out"}}
                        {:id "min"
                         :source-paths ["src"]
-                        :compiler {:output-to "resources/public/js/compiled/solitaire.js"
+                        :compiler {:output-to "resources/public/js/min/solitaire.js"
                                    :main solitaire.view.core
                                    :optimizations :advanced
                                    :pretty-print false}}]}
