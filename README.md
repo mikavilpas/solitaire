@@ -96,7 +96,7 @@ and you should see an alert in the browser window.
 
 To get connect cider (in emacs) to this repl, do `cider-connect` to
 port 7888. This connects to figwheel's environment, a clojure repl. To
-connect to the cljs repl, see test-runner.cljs. It does this, namely:
+connect to the cljs repl, see dev.cljs. It does this, namely:
 
 ```lisp
 (do

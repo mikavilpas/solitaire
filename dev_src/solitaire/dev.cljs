@@ -3,6 +3,11 @@
             [solitaire.view.core :refer [app-state system]]
             [solitaire.view.actions :refer [init-game-loop]]))
 
+(comment
+  (do
+    (use 'figwheel-sidecar.repl-api)
+    (cljs-repl)))
+
 (enable-console-print!)
 
 (defn start-system [app-state]

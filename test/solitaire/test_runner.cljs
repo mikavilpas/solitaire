@@ -6,11 +6,6 @@
             [figwheel.client :as fw])
   (:require-macros [cljs.test :refer (run-tests)]))
 
-(comment
-  (do
-    (use 'figwheel-sidecar.repl-api)
-    (cljs-repl)))
-
 (enable-console-print!)
 (fw/start {:build-id "test"})
 
