@@ -13,3 +13,4 @@ pom.xml
 .nrepl-port
 resources/public/js/test/out
 resources/public/js/min/out
+resources/public/js/test/test.js
