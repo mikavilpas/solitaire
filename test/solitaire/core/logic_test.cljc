@@ -222,7 +222,16 @@
                :foundation1 []}
               :waste-heap
               :foundation1)
-             :foundation1))))
+             :foundation1)))
+
+  ;; swaps selection if no cards can be moved
+  (is (= :foundation2
+         (-> (l/move-card-place-cards-to
+              {:foundation1 [(l/card :diamond :3)]
+               :foundation2 [(l/card :heart :3)]}
+              :foundation1
+              :foundation2)
+             :selected-place))))
 
 (deftest get-hints-test
   (is (= (set [:tableau1 :foundation1])

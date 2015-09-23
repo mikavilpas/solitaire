@@ -195,7 +195,9 @@
     (move-cards-on-place game-state
                          cards-to-move
                          target-card-place)
-    game-state))
+
+    ;; if no cards can be moved, select the target card-place
+    (assoc game-state :selected-place target-card-place)))
 
 (defn turn-card [game-state card-to-turn card-place-name]
   (cond (= :stock card-place-name)
