@@ -247,3 +247,12 @@
             #{}
             other-places)))
 
+(defn auto-move
+  "Moves all applicable cards from the source-card-place to the
+  first place they can be moved to"
+  [game-state source-card-place]
+  (if-let [possible-targets (get-hints game-state source-card-place)]
+    (move-card-place-cards-to game-state
+                              source-card-place
+                              (first possible-targets))
+    game-state))

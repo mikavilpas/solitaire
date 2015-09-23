@@ -21,6 +21,9 @@
 (defn deselect! [app-state]
   (swap! app-state assoc :selected-place nil))
 
+(defn auto-move! [app-state card-place-name]
+  (swap-with-history! app-state l/auto-move card-place-name))
+
 (defn select-or-move! [app-state target-card-place]
   (let [target-card (last (get @app-state target-card-place))
         previous-selected-place (:selected-place @app-state)]
@@ -79,7 +82,8 @@
                           :deselect deselect!
                           :new-game new-game!
                           :select-or-move select-or-move!
-                          :undo undo!}
+                          :undo undo!
+                          :auto-move auto-move!}
                 handler (get handlers event-name
                              #(print "Warning: unknown event " event-name))]
             (try

@@ -35,7 +35,10 @@
                              ;; don't let the click event bubble to
                              ;; the board. this would cause the card
                              ;; to be deselected immediately.
-                             (.stopPropagation %))}
+                             (.stopPropagation %))
+              :on-double-click #(game-event :auto-move
+                                            app-state
+                                            card-place-name)}
              properties)
       properties)))
 

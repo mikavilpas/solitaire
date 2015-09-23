@@ -239,3 +239,11 @@
                        :foundation1 [(l/card :heart :2)]
                        :tableau1 [(l/card :spade :4)]}
                       :waste-heap))))
+
+(deftest auto-move-test
+  (let [result (l/auto-move {:tableau1 [(l/card :heart :A)]}
+                            :tableau1)]
+    (is (= []
+           (:tableau1 result)))
+    (is (= [(l/card :heart :A)]
+           (:foundation2 result)))))
