@@ -15,6 +15,16 @@ well.
 
 See the game in action [here](http://rawgit.com/sp3ctum/solitaire/master/resources/public/index.html).
 
+## Features
+- move cards by first selecting (clicking) a card place, then
+  selecting the place you want to move the cards to. The game will
+  move as many cards to that place as it can.
+- double click to move a card to the first available place automatically
+- there is a history of 10 moves - click "Undo" to go back and fix
+  your mistakes!
+- tests are not available in the production build, sorry :)
+- oh, nothing special currently happens if you finish the game
+
 ## Reflection: my goals and outcome
 
 **Implement the core game logic in cljc and see if it integrates to
