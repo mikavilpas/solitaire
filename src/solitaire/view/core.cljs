@@ -1,12 +1,15 @@
-(ns ^:figwheel-always solitaire.view.core
-    (:require [reagent.core :as reagent :refer [atom]]
-              [solitaire.core.logic :as l]
-              [cljs.core.async :refer [put!]]
-              [solitaire.view.actions :refer [game-chan init-game-loop]]))
+(ns solitaire.view.core
+  (:require [reagent.core :as reagent :refer [atom]]
+            [solitaire.core.logic :as l]
+            [cljs.core.async :refer [put!]]
+            [solitaire.view.actions :refer [game-chan init-game-loop]]))
 
 ;; this is the state that the game logic handles and "modifies" by
 ;; returning a new state
 (defonce app-state (atom (l/new-game-state)))
+
+;; contains a shutdown function of no arguments
+(defonce system (atom (init-game-loop app-state)))
 
 ;; ui specific state for graphical effects and such
 (def ui-state (atom {:hinted-card-places #{}}))
@@ -115,10 +118,6 @@
                      "Hint"]]]
     [:div.row [:div.pull-left
                [:h3 [:a {:href "test.html"} "Tests"]]]]]])
-
-
-;; contains a shutdown function of no arguments
-(defonce system (atom (init-game-loop app-state)))
 
 (reagent/render-component [board]
                           (js/document.getElementById "app"))
