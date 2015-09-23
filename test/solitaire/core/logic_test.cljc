@@ -16,12 +16,9 @@
                          (l/card :spade :4)))))
 
 ;; todos/ideas:
-;; weird extra card as the last card of :stock: {:facing-up true}
 ;; win screen
 ;; moving card animation
 ;; touch device support (swipes)
-;; auto moves
-;; hint
 
 (deftest rank-as-number-test
   (is (= (range 1 14)
