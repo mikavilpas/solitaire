@@ -195,7 +195,9 @@
     (move-cards-on-place game-state
                          cards-to-move
                          target-card-place)
-    game-state))
+
+    ;; if no cards can be moved, select the target card-place
+    (assoc game-state :selected-place target-card-place)))
 
 (defn turn-card [game-state card-to-turn card-place-name]
   (cond (= :stock card-place-name)
@@ -245,3 +247,12 @@
             #{}
             other-places)))
 
+(defn auto-move
+  "Moves all applicable cards from the source-card-place to the
+  first place they can be moved to"
+  [game-state source-card-place]
+  (if-let [possible-targets (get-hints game-state source-card-place)]
+    (move-card-place-cards-to game-state
+                              source-card-place
+                              (first possible-targets))
+    game-state))

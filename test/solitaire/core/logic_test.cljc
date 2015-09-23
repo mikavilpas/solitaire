@@ -16,12 +16,9 @@
                          (l/card :spade :4)))))
 
 ;; todos/ideas:
-;; weird extra card as the last card of :stock: {:facing-up true}
 ;; win screen
 ;; moving card animation
 ;; touch device support (swipes)
-;; auto moves
-;; hint
 
 (deftest rank-as-number-test
   (is (= (range 1 14)
@@ -222,7 +219,16 @@
                :foundation1 []}
               :waste-heap
               :foundation1)
-             :foundation1))))
+             :foundation1)))
+
+  ;; swaps selection if no cards can be moved
+  (is (= :foundation2
+         (-> (l/move-card-place-cards-to
+              {:foundation1 [(l/card :diamond :3)]
+               :foundation2 [(l/card :heart :3)]}
+              :foundation1
+              :foundation2)
+             :selected-place))))
 
 (deftest get-hints-test
   (is (= (set [:tableau1 :foundation1])
@@ -230,3 +236,11 @@
                        :foundation1 [(l/card :heart :2)]
                        :tableau1 [(l/card :spade :4)]}
                       :waste-heap))))
+
+(deftest auto-move-test
+  (let [result (l/auto-move {:tableau1 [(l/card :heart :A)]}
+                            :tableau1)]
+    (is (= []
+           (:tableau1 result)))
+    (is (= [(l/card :heart :A)]
+           (:foundation2 result)))))
