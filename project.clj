@@ -4,13 +4,13 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :dependencies [[org.clojure/clojure "1.7.0"]
-                 [org.clojure/clojurescript "0.0-3297"]
-                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]
-                 [reagent "0.5.0"]]
+  :dependencies [[org.clojure/clojure "1.10.3"]
+                 [org.clojure/clojurescript "1.10.844"]
+                 [org.clojure/core.async "1.3.618"]
+                 [reagent "1.0.0"]]
 
-  :plugins [[lein-cljsbuild "1.0.5"]
-            [lein-figwheel "0.3.7"]]
+  :plugins [[lein-cljsbuild "1.1.8"]
+            [lein-figwheel "0.5.20"]]
 
   :source-paths ["src"]
 
@@ -28,7 +28,6 @@
                                    :source-map true}}
                        {:id "test"
                         :source-paths ["src/solitaire/core" "test"]
-                        :source-map true
                         :compiler {:main solitaire.test-runner
                                    :output-to "resources/public/js/test/test.js"
                                    :output-dir "resources/public/js/test/out"
@@ -38,6 +37,7 @@
                         :compiler {:output-to "resources/public/js/min/solitaire.js"
                                    :main solitaire.view.core
                                    :optimizations :advanced
+                                   :source-map "resources/public/js/min/solitaire.js.map"
                                    :pretty-print false}}]}
 
   :figwheel {
